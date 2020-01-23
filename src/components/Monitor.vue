@@ -2,7 +2,7 @@
   <div id="monitor">
     <el-row class="tac">
       <!--          侧栏-->
-      <el-col :span="6">
+      <el-col :span="4">
         <el-menu :default-active="this.$router.path" router
                  class="el-menu-vertical-demo">
           <!--                  index写设置的路由路径-->
@@ -24,7 +24,7 @@
         </el-menu>
       </el-col>
       <!--          右边内容区域-->
-      <el-col :span="10" id="showContent">
+      <el-col :span="19" id="showContent">
         <router-view></router-view>
       </el-col>
     </el-row>

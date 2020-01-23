@@ -6,20 +6,37 @@
 <!--        <el-option v-for="item in instances" :key="item.instanceId" :label="item.instanceId"-->
 <!--                 :value="item.instanceId"/>-->
 <!--      </el-select>-->
-    <label>
-      <select @change="refreshData($event.target.value)">
-        <option v-for="item in instances" v-bind:key="item.instanceId">{{item.instanceId}}</option>
-      </select>
-    </label>
+    <el-select v-model="selectValueId" placeholder="请选择"
+               @change="refreshData(selectValueId)">
+      <el-option
+        v-for="item in instances"
+        :key="item.instanceId"
+        :value="item.instanceId">
+      </el-option>
+    </el-select>
+<!--    <label>-->
+<!--      <select @change="refreshData($event.target.value)">-->
+<!--        <option v-for="item in instances" v-bind:key="item.instanceId">{{item.instanceId}}</option>-->
+<!--      </select>-->
+<!--    </label>-->
 <!--    cpu三个一组-->
-    <div id="cpuTotalChart" style="width: 500px;height:400px;"></div>
-    <div id="cpuSystemChart" style="width: 500px;height:400px;"></div>
-    <div id="cpuUserChart" style="width: 500px;height:400px;"></div>
+    <el-card shadow="always" class="box-card">
+      <div class="marginClass top" style="width: 500px;height:400px;"></div>
+      <div class="left_right">
+        <div class="marginClass left" style="width: 500px;height:400px;"></div>
+        <div class="marginClass right" style="width: 500px;height:400px;"></div>
+      </div>
+    </el-card>
 <!--    -->
 <!--    load三个一组-->
-    <div id="load1MChart" style="width: 500px;height:400px;"></div>
-    <div id="load5MChart" style="width: 500px;height:400px;"></div>
-    <div id="load15MChart" style="width: 500px;height:400px;"></div>
+    <el-card shadow="always" class="box-card">
+      <div class="marginClass top" style="width: 500px;height:400px;"></div>
+      <div class="left_right">
+        <div class="marginClass left" style="width: 500px;height:400px;"></div>
+        <div class="marginClass right" style="width: 500px;height:400px;"></div>
+      </div>
+    </el-card>
+
 <!--    -->
 <!--    memory自己一组-->
     <div id="memoryChart" style="width: 500px;height:400px;"></div>
@@ -63,7 +80,8 @@ export default {
       instanceId: '',
       cpuTotal: [],
       cpuSystem: [],
-      cpuUser: []
+      cpuUser: [],
+      selectValueId: ''
     }
   },
   methods: {
@@ -345,5 +363,22 @@ export default {
 </script>
 
 <style scoped>
-
+.el-card {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.top {
+  margin: 0 auto;
+}
+.left_right {
+  display: flex;
+  justify-content: space-between;
+}
+.marginClass {
+  margin: 10px
+}
 </style>
