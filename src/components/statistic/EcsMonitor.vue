@@ -1,30 +1,27 @@
 <template>
   <div id="ecsMonitor">
-<!--    没用的-->
-<!--      <el-select v-model="instances.instanceId" placeholder="请选择实例"-->
-<!--               style="width: 100%">-->
-<!--        <el-option v-for="item in instances" :key="item.instanceId" :label="item.instanceId"-->
-<!--                 :value="item.instanceId"/>-->
-<!--      </el-select>-->
-<!--    <el-select v-model="selectValueId" placeholder="请选择"-->
-<!--               @change="refreshData(selectValueId)">-->
-<!--      <el-option-->
-<!--        v-for="item in instances"-->
-<!--        :key="item.instanceId"-->
-<!--        :value="item.instanceId">-->
-<!--      </el-option>-->
-<!--    </el-select>-->
-    <label>
-      <select @change="refreshData($event.target.value)">
-        <option v-for="item in instances" v-bind:key="item.instanceId">{{item.instanceId}}</option>
-      </select>
-    </label>
+    <el-select v-model="selectValueId" placeholder="请选择"
+               @change="refreshData(selectValueId)"
+    style="margin-bottom: 20px;">
+      <el-option
+        v-for="item in instances"
+        :key="item.instanceId"
+        :value="item.instanceId">
+      </el-option>
+    </el-select>
 <!--    cpu三个一组-->
-<!--    <el-card shadow="always" class="box-card">-->
-      <div id="cpuTotalChart" style="width: 500px;height:400px;"></div>
-      <div id="cpuSystemChart" style="width: 500px;height:400px;"></div>
-      <div id="cpuUserChart" style="width: 500px;height:400px;"></div>
-<!--    </el-card>-->
+    <div class="titleTab">cpu</div>
+    <el-card class="box-card chartGroup">
+      <div>
+        <div class="group1">
+          <div id="cpuTotalChart" style="width: 800px;height: 300px;"></div>
+        </div>
+        <div class="group2">
+          <div id="cpuSystemChart" style="width: 400px;height: 300px;"></div>
+          <div id="cpuUserChart" style="width: 400px;height: 300px;"></div>
+        </div>
+      </div>
+    </el-card>
 <!--    -->
 <!--    load三个一组-->
 <!--    <el-card shadow="always" class="box-card">-->
@@ -37,22 +34,49 @@
 
 <!--    -->
 <!--    memory自己一组-->
-    <div id="memoryChart" style="width: 500px;height:400px;"></div>
+    <div class="titleTab">内存</div>
+    <el-card class="box-card chartGroup">
+    <div>
+      <div id="memoryChart" style="width: 800px;height:300px;"></div>
+    </div>
+    </el-card>
 <!--    -->
 <!--    disk五个一组-->
-    <div id="diskInodeChart" style="width: 500px;height:400px;"></div>
-    <div id="diskRRateChart" style="width: 500px;height:400px;"></div>
-    <div id="diskWRateChart" style="width: 500px;height:400px;"></div>
-    <div id="diskRIopsChart" style="width: 500px;height:400px;"></div>
-    <div id="diskWIopsChart" style="width: 500px;height:400px;"></div>
+    <div class="titleTab">硬盘</div>
+    <el-card class="box-card chartGroup">
+      <div>
+        <div class="group1">
+          <div id="diskInodeChart" style="width: 800px;height:300px;"></div>
+        </div>
+        <div class="group2">
+          <div id="diskRRateChart" style="width: 400px;height:300px;"></div>
+          <div id="diskWRateChart" style="width: 400px;height:300px;"></div>
+        </div>
+        <div class="group3">
+          <div id="diskRIopsChart" style="width: 400px;height:300px;"></div>
+          <div id="diskWIopsChart" style="width: 400px;height:300px;"></div>
+        </div>
+      </div>
+    </el-card>
 <!--    -->
 <!--    最后五个一组-->
-    <div id="netIRateChart" style="width: 500px;height:400px;"></div>
-    <div id="netORateChart" style="width: 500px;height:400px;"></div>
-    <div id="netIPpsChart" style="width: 500px;height:400px;"></div>
-    <div id="netOPpsChart" style="width: 500px;height:400px;"></div>
-    <div id="tcpConnectionChart" style="width: 500px;height:400px;"></div>
-<!--    -->
+    <div class="titleTab">网络</div>
+    <el-card class="box-card chartGroup">
+      <div>
+        <div class="group1">
+          <div id="netIRateChart" style="width: 800px;height:300px;"></div>
+        </div>
+        <div class="group2">
+          <div id="netORateChart" style="width: 400px;height:300px;"></div>
+          <div id="netIPpsChart" style="width: 400px;height:300px;"></div>
+        </div>
+        <div class="group3">
+          <div id="netOPpsChart" style="width: 400px;height:30px;"></div>
+          <div id="tcpConnectionChart" style="width: 400px;height:300px;"></div>
+        </div>
+      </div>
+    </el-card>
+
   </div>
 </template>
 
@@ -361,12 +385,27 @@ export default {
 </script>
 
 <style scoped>
-.el-card {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-}
+  .titleTab {
+    padding: 10px 0 10px 10px;
+    background-color: #efefef;
+  }
+  .chartGroup {
+    /*width: 100%;*/
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+  }
+  .group1,.group2,.group3 {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 5px 5px 0;
+  }
+/*.el-card {*/
+/*  width: 100%;*/
+/*  height: auto;*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  align-items: center;*/
+/*  flex-direction: column;*/
+/*}*/
 </style>

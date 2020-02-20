@@ -1,15 +1,33 @@
 <template>
   <div id="ossMonitor">
-    <label>
-      <select @change="refreshData($event.target.value)">
-        <option v-for="item in buckets" v-bind:key="item.id">{{item.name}}</option>
-      </select>
-    </label>
-    <div id="storageUtilChart" style="width: 500px;height:400px;"></div>
-    <div id="getRequestChart" style="width: 500px;height:400px;"></div>
-    <div id="putRequestChart" style="width: 500px;height:400px;"></div>
-    <div id="internetTXChart" style="width: 500px;height:400px;"></div>
-    <div id="internetRXChart" style="width: 500px;height:400px;"></div>
+    <el-select v-model="selectValueId" placeholder="请选择"
+               @change="refreshData(selectValueId)">
+      <el-option
+        v-for="item in buckets"
+        :key="item.id"
+        :value="item.name">
+      </el-option>
+    </el-select>
+<!--    <label>-->
+<!--      <select @change="refreshData($event.target.value)">-->
+<!--        <option v-for="item in buckets" v-bind:key="item.id">{{item.name}}</option>-->
+<!--      </select>-->
+<!--    </label>-->
+    <el-card class="box-card chartGroup">
+      <div>
+        <div class="group1">
+          <div id="storageUtilChart" style="width: 500px;height:400px;"></div>
+          <div id="getRequestChart" style="width: 500px;height:400px;"></div>
+        </div>
+        <div class="group2">
+          <div id="putRequestChart" style="width: 500px;height:400px;"></div>
+          <div id="internetTXChart" style="width: 500px;height:400px;"></div>
+        </div>
+      </div>
+      <div class="group3">
+        <div id="internetRXChart" style="width: 500px;height:400px;"></div>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -29,7 +47,8 @@ export default {
   data () {
     return {
       buckets: [],
-      bucketName: ''
+      bucketName: '',
+      selectValueId: ''
     }
   },
   methods: {
@@ -145,5 +164,15 @@ export default {
 </script>
 
 <style scoped>
-
+  .chartGroup {
+    /*width: 100%;*/
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+  }
+  .group1,.group2,.group3 {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 5px 5px 0;
+  }
 </style>
