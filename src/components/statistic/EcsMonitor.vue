@@ -1,7 +1,8 @@
 <template>
   <div id="ecsMonitor">
-    <el-select v-model="selectValueId" placeholder="请选择"
-               @change="refreshData(selectValueId)"
+    <el-form-item label="选择实例"/>
+    <el-select v-model="instanceId" placeholder="请选择"
+               @change="refreshData(instanceId)"
     style="margin-bottom: 20px;">
       <el-option
         v-for="item in instances"
@@ -23,14 +24,16 @@
       </div>
     </el-card>
 <!--    -->
-<!--    load三个一组-->
-<!--    <el-card shadow="always" class="box-card">-->
-<!--      <div class="marginClass top" style="width: 500px;height:400px;"></div>-->
-<!--      <div class="left_right">-->
-<!--        <div class="marginClass left" style="width: 500px;height:400px;"></div>-->
-<!--        <div class="marginClass right" style="width: 500px;height:400px;"></div>-->
-<!--      </div>-->
-<!--    </el-card>-->
+    <div class="titleTab">系统负载</div>
+    <el-card shadow="always" class="box-card">
+      <div class="group2">
+        <div id="load1MChart" style="width: 800px;height:300px;"></div>
+      </div>
+      <div class="group2">
+        <div id="load5MChart" style="width: 400px;height:300px;"></div>
+        <div id="load15MChart" style="width: 400px;height:300px;"></div>
+      </div>
+    </el-card>
 
 <!--    -->
 <!--    memory自己一组-->
@@ -64,15 +67,17 @@
     <el-card class="box-card chartGroup">
       <div>
         <div class="group1">
-          <div id="netIRateChart" style="width: 800px;height:300px;"></div>
+          <div id="tcpConnectionChart" style="width: 800px;height:300px;"></div>
+
         </div>
         <div class="group2">
+          <div id="netIRateChart" style="width: 400px;height:300px;"></div>
           <div id="netORateChart" style="width: 400px;height:300px;"></div>
-          <div id="netIPpsChart" style="width: 400px;height:300px;"></div>
+
         </div>
         <div class="group3">
-          <div id="netOPpsChart" style="width: 400px;height:30px;"></div>
-          <div id="tcpConnectionChart" style="width: 400px;height:300px;"></div>
+          <div id="netIPpsChart" style="width: 400px;height:300px;"></div>
+          <div id="netOPpsChart" style="width: 400px;height:300px;"></div>
         </div>
       </div>
     </el-card>
@@ -91,6 +96,10 @@ export default {
   // },
   created () {
     ecsInfo.getInstances().then(res => {
+      this.cpuTotal = this.$echarts.init(document.getElementById('cpuTotalChart'))
+      this.cpuSystem = this.$echarts.init(document.getElementById('cpuSystemChart'))
+      this.cpuUser = this.$echarts.init(document.getElementById('cpuUserChart'))
+
       this.instances = res.data
       this.instanceId = res.data[0].instanceId
       this.refreshData(this.instanceId)
@@ -100,68 +109,66 @@ export default {
     return {
       instances: [],
       instanceId: '',
-      cpuTotal: [],
-      cpuSystem: [],
-      cpuUser: [],
-      selectValueId: ''
+      cpuTotal: {},
+      cpuSystem: {},
+      cpuUser: {}
     }
   },
   methods: {
     refreshData (instanceId) {
       let endTime = new Date().valueOf()
-      let startTime = moment(endTime).add(-1, 'h').valueOf()
-      ecsMetric.getCpuTotal(instanceId, startTime, endTime).then(res => {
-        this.cpuTotal = res.data
+      let startTime = moment(endTime).add(-50, 'd').valueOf()
+      let interval = moment.duration(60, 'minutes').as('minutes')
+      ecsMetric.getCpuTotal(instanceId, startTime, endTime, interval).then(res => {
+        console.log(res.data)
         this.drawLine('cpuTotalChart', 'CPU总使用率', res.data)
       })
-      ecsMetric.getCpuSystem(instanceId, startTime, endTime).then(res => {
-        this.cpuSystem = res.data
+      ecsMetric.getCpuSystem(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('cpuSystemChart', 'CPU内核空间使用率', res.data)
       })
-      ecsMetric.getCpuUser(instanceId, startTime, endTime).then(res => {
-        this.cpuUser = res.data
+      ecsMetric.getCpuUser(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('cpuUserChart', 'CPU用户空间使用率', res.data)
       })
-      ecsMetric.getLoad1m(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getLoad1m(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('load1MChart', '系统平均负载(1分钟内)', res.data)
       })
-      ecsMetric.getLoad5m(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getLoad5m(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('load5MChart', '系统平均负载(5分钟内)', res.data)
       })
-      ecsMetric.getLoad15m(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getLoad15m(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('load15MChart', '系统平均负载(15分钟内)', res.data)
       })
-      ecsMetric.getMemory(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getMemory(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('memoryChart', '内存使用率', res.data)
       })
-      ecsMetric.getDiskInode(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getDiskInode(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('diskInodeChart', '磁盘inode使用率', res.data)
       })
-      ecsMetric.getDiskReadRate(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getDiskReadRate(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('diskRRateChart', '磁盘读速率(Byte/s)', res.data)
       })
-      ecsMetric.getDiskWriteRate(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getDiskWriteRate(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('diskWRateChart', '磁盘写速率(Byte/s)', res.data)
       })
-      ecsMetric.getDiskReadIOPS(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getDiskReadIOPS(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('diskRIopsChart', '磁盘读IOPS', res.data)
       })
-      ecsMetric.getDiskWriteIOPS(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getDiskWriteIOPS(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('diskWIopsChart', '磁盘写IOPS', res.data)
       })
-      ecsMetric.getNetInBPS(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getNetInBPS(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('netIRateChart', '下行带宽(bit/s)', res.data)
       })
-      ecsMetric.getNetOutBPS(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getNetOutBPS(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('netORateChart', '上行带宽(bit/s)', res.data)
       })
-      ecsMetric.getNetInPPS(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getNetInPPS(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('netIPpsChart', '网络流入数据包(packages/s)', res.data)
       })
-      ecsMetric.getNetOutPPS(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getNetOutPPS(instanceId, startTime, endTime, interval).then(res => {
         this.drawLine('netOPpsChart', '网络流出数据包(packages/s)', res.data)
       })
-      ecsMetric.getTcpConnection(instanceId, startTime, endTime).then(res => {
+      ecsMetric.getTcpConnection(instanceId, startTime, endTime, interval).then(res => {
         // this.drawLine('tcpConnectionChart', 'TCP连接数', res.data)
         this.drawTcpConnection('tcpConnectionChart', 'TCP连接数', res.data)
       })
@@ -275,23 +282,25 @@ export default {
       myChart.showLoading({
         text: '正在加载'
       })
-      let total = metricArray.map(function (item) {
-        if (item['state'] === 'TCP_TOTAL') {
-          return item['average']
-        }
+      let total = metricArray.filter(function (item) {
+        return item.state === 'TCP_TOTAL'
+      }).map(function (item) {
+        return item.average
       })
-      let estb = metricArray.map(function (item) {
-        if (item['state'] === 'ESTABLISHED') {
-          return item['average']
-        }
+      let estb = metricArray.filter(function (item) {
+        return item.state === 'ESTABLISHED'
+      }).map(function (item) {
+        return item.average
       })
-      let nestb = metricArray.map(function (item) {
-        if (item['state'] === 'NON_ESTABLISHED') {
-          return item['average']
-        }
+      let nestb = metricArray.filter(function (item, index, arr) {
+        return item.state === 'NON_ESTABLISHED'
+      }).map(function (item) {
+        return item.average
       })
-      let times = metricArray.map(function (item) {
-        return moment(item['timestamp']).format('YYYY/MM/DD HH:mm')
+      let times = metricArray.filter(function (item, index, arr) {
+        return index % 3 === 0
+      }).map(function (item) {
+        return moment(item.timestamp).format('YYYY/MM/DD HH:mm')
       })
       let option = {
         backgroundColor: '#21202D',

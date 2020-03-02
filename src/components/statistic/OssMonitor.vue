@@ -1,7 +1,7 @@
 <template>
   <div id="ossMonitor">
-    <el-select v-model="selectValueId" placeholder="请选择"
-               @change="refreshData(selectValueId)">
+    <el-select v-model="bucketName" placeholder="请选择"
+               @change="refreshData(bucketName)">
       <el-option
         v-for="item in buckets"
         :key="item.id"
@@ -47,27 +47,27 @@ export default {
   data () {
     return {
       buckets: [],
-      bucketName: '',
-      selectValueId: ''
+      bucketName: ''
     }
   },
   methods: {
     refreshData (bucketName) {
       let endTime = new Date().valueOf()
-      let startTime = moment(endTime).add(-20, 'd').valueOf()
-      ossMetric.getStorageUtil(startTime, endTime, bucketName).then(res => {
+      let startTime = moment(endTime).add(-50, 'd').valueOf()
+      let interval = moment.duration(5, 'minutes').as('minutes')
+      ossMetric.getStorageUtil(startTime, endTime, interval, bucketName).then(res => {
         this.drawLine('storageUtilChart', '存储用量(B)', res.data, 'meteringStorageUtilization')
       })
-      ossMetric.getGetRequest(startTime, endTime, bucketName).then(res => {
+      ossMetric.getGetRequest(startTime, endTime, interval, bucketName).then(res => {
         this.drawLine('getRequestChart', 'Get请求数', res.data, 'meteringGetRequest')
       })
-      ossMetric.getPutRequest(startTime, endTime, bucketName).then(res => {
+      ossMetric.getPutRequest(startTime, endTime, interval, bucketName).then(res => {
         this.drawLine('putRequestChart', 'Put请求数', res.data, 'meteringPutRequest')
       })
-      ossMetric.getInternetTX(startTime, endTime, bucketName).then(res => {
+      ossMetric.getInternetTX(startTime, endTime, interval, bucketName).then(res => {
         this.drawLine('internetTXChart', '公网流出流量(B)', res.data, 'meteringInternetTX')
       })
-      ossMetric.getInternetRX(startTime, endTime, bucketName).then(res => {
+      ossMetric.getInternetRX(startTime, endTime, interval, bucketName).then(res => {
         this.drawLine('internetRXChart', '公网流入流量(B)', res.data, 'meteringInternetRX')
       })
     },
