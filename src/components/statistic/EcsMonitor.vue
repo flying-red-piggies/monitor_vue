@@ -1,87 +1,161 @@
 <template>
+<!--  <div id="ecsMonitor">-->
+<!--    <el-form-item label="选择实例"/>-->
+<!--    <el-select v-model="instanceId" placeholder="请选择"-->
+<!--               @change="refreshData(instanceId)"-->
+<!--    style="margin-bottom: 20px;">-->
+<!--      <el-option-->
+<!--        v-for="item in instances"-->
+<!--        :key="item.instanceId"-->
+<!--        :value="item.instanceId">-->
+<!--      </el-option>-->
+<!--    </el-select>-->
+<!--&lt;!&ndash;    cpu三个一组&ndash;&gt;-->
+<!--    <div class="titleTab">cpu</div>-->
+<!--    <el-card class="box-card chartGroup">-->
+<!--      <div>-->
+<!--        <div class="group1">-->
+<!--          <div id="cpuTotalChart" style="width: 800px;height: 300px;"></div>-->
+<!--        </div>-->
+<!--        <div class="group2">-->
+<!--          <div id="cpuSystemChart" style="width: 400px;height: 300px;"></div>-->
+<!--          <div id="cpuUserChart" style="width: 400px;height: 300px;"></div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </el-card>-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--    <div class="titleTab">系统负载</div>-->
+<!--    <el-card shadow="always" class="box-card">-->
+<!--      <div class="group2">-->
+<!--        <div id="load1MChart" style="width: 800px;height:300px;"></div>-->
+<!--      </div>-->
+<!--      <div class="group2">-->
+<!--        <div id="load5MChart" style="width: 400px;height:300px;"></div>-->
+<!--        <div id="load15MChart" style="width: 400px;height:300px;"></div>-->
+<!--      </div>-->
+<!--    </el-card>-->
+
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    memory自己一组&ndash;&gt;-->
+<!--    <div class="titleTab">内存</div>-->
+<!--    <el-card class="box-card chartGroup">-->
+<!--    <div>-->
+<!--      <div id="memoryChart" style="width: 800px;height:300px;"></div>-->
+<!--    </div>-->
+<!--    </el-card>-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    disk五个一组&ndash;&gt;-->
+<!--    <div class="titleTab">硬盘</div>-->
+<!--    <el-card class="box-card chartGroup">-->
+<!--      <div>-->
+<!--        <div class="group1">-->
+<!--          <div id="diskInodeChart" style="width: 800px;height:300px;"></div>-->
+<!--        </div>-->
+<!--        <div class="group2">-->
+<!--          <div id="diskRRateChart" style="width: 400px;height:300px;"></div>-->
+<!--          <div id="diskWRateChart" style="width: 400px;height:300px;"></div>-->
+<!--        </div>-->
+<!--        <div class="group3">-->
+<!--          <div id="diskRIopsChart" style="width: 400px;height:300px;"></div>-->
+<!--          <div id="diskWIopsChart" style="width: 400px;height:300px;"></div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </el-card>-->
+<!--&lt;!&ndash;    &ndash;&gt;-->
+<!--&lt;!&ndash;    最后五个一组&ndash;&gt;-->
+<!--    <div class="titleTab">网络</div>-->
+<!--    <el-card class="box-card chartGroup">-->
+<!--      <div>-->
+<!--        <div class="group1">-->
+<!--          <div id="tcpConnectionChart" style="width: 800px;height:300px;"></div>-->
+
+<!--        </div>-->
+<!--        <div class="group2">-->
+<!--          <div id="netIRateChart" style="width: 400px;height:300px;"></div>-->
+<!--          <div id="netORateChart" style="width: 400px;height:300px;"></div>-->
+
+<!--        </div>-->
+<!--        <div class="group3">-->
+<!--          <div id="netIPpsChart" style="width: 400px;height:300px;"></div>-->
+<!--          <div id="netOPpsChart" style="width: 400px;height:300px;"></div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </el-card>-->
+
+<!--  </div>-->
   <div id="ecsMonitor">
-    <el-form-item label="选择实例"/>
-    <el-select v-model="instanceId" placeholder="请选择"
-               @change="refreshData(instanceId)"
-    style="margin-bottom: 20px;">
-      <el-option
-        v-for="item in instances"
-        :key="item.instanceId"
-        :value="item.instanceId">
-      </el-option>
-    </el-select>
-<!--    cpu三个一组-->
-    <div class="titleTab">cpu</div>
-    <el-card class="box-card chartGroup">
-      <div>
-        <div class="group1">
-          <div id="cpuTotalChart" style="width: 800px;height: 300px;"></div>
+    <el-tabs type="border-card" v-model="activeTab">
+      <el-tab-pane label="实例列表" name="instance" :key="instance">
+        <div class="search">
+          <el-input class="elInput" placeholder="输入IP、主机名称或实例ID进行搜索"></el-input>
+          <el-button>搜索</el-button>
+          <el-button>同步主机信息</el-button>
         </div>
-        <div class="group2">
-          <div id="cpuSystemChart" style="width: 400px;height: 300px;"></div>
-          <div id="cpuUserChart" style="width: 400px;height: 300px;"></div>
+        <div>
+          <el-table
+            ref="multipleTable"
+            :data="instanceList"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column
+              label="实例name/主机名"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.name }}</template>
+            </el-table-column>
+            <el-table-column
+              label="插件状态（全部）"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.plugins }}</template>
+            </el-table-column>
+            <el-table-column
+              label="Agent版本">
+              <template slot-scope="scope">{{ scope.row.version }}</template>
+            </el-table-column>
+            <el-table-column
+              label="所在地域"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.origin }}</template>
+            </el-table-column>
+            <el-table-column
+              label="IP"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.IP }}</template>
+            </el-table-column>
+            <el-table-column
+              label="网络类型"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.netWork }}</template>
+            </el-table-column>
+            <el-table-column
+              label="CPU使用率"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.cpuPerc }}</template>
+            </el-table-column>
+            <el-table-column
+              label="内存使用率"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.menmoryPerc }}</template>
+            </el-table-column>
+            <el-table-column
+              label="磁盘使用率"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.diskPerc }}</template>
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              width="120">
+              <el-link style="color: blue">监控图表报警规则</el-link>
+            </el-table-column>
+          </el-table>
         </div>
-      </div>
-    </el-card>
-<!--    -->
-    <div class="titleTab">系统负载</div>
-    <el-card shadow="always" class="box-card">
-      <div class="group2">
-        <div id="load1MChart" style="width: 800px;height:300px;"></div>
-      </div>
-      <div class="group2">
-        <div id="load5MChart" style="width: 400px;height:300px;"></div>
-        <div id="load15MChart" style="width: 400px;height:300px;"></div>
-      </div>
-    </el-card>
-
-<!--    -->
-<!--    memory自己一组-->
-    <div class="titleTab">内存</div>
-    <el-card class="box-card chartGroup">
-    <div>
-      <div id="memoryChart" style="width: 800px;height:300px;"></div>
-    </div>
-    </el-card>
-<!--    -->
-<!--    disk五个一组-->
-    <div class="titleTab">硬盘</div>
-    <el-card class="box-card chartGroup">
-      <div>
-        <div class="group1">
-          <div id="diskInodeChart" style="width: 800px;height:300px;"></div>
-        </div>
-        <div class="group2">
-          <div id="diskRRateChart" style="width: 400px;height:300px;"></div>
-          <div id="diskWRateChart" style="width: 400px;height:300px;"></div>
-        </div>
-        <div class="group3">
-          <div id="diskRIopsChart" style="width: 400px;height:300px;"></div>
-          <div id="diskWIopsChart" style="width: 400px;height:300px;"></div>
-        </div>
-      </div>
-    </el-card>
-<!--    -->
-<!--    最后五个一组-->
-    <div class="titleTab">网络</div>
-    <el-card class="box-card chartGroup">
-      <div>
-        <div class="group1">
-          <div id="tcpConnectionChart" style="width: 800px;height:300px;"></div>
-
-        </div>
-        <div class="group2">
-          <div id="netIRateChart" style="width: 400px;height:300px;"></div>
-          <div id="netORateChart" style="width: 400px;height:300px;"></div>
-
-        </div>
-        <div class="group3">
-          <div id="netIPpsChart" style="width: 400px;height:300px;"></div>
-          <div id="netOPpsChart" style="width: 400px;height:300px;"></div>
-        </div>
-      </div>
-    </el-card>
-
+      </el-tab-pane>
+      <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -107,7 +181,20 @@ export default {
   },
   data () {
     return {
+      activeTab: 'instance',
       instances: [],
+      instanceList: [{
+        name: '1234',
+        plugins: 'running',
+        version: '2.1.1',
+        origin: 'south',
+        IP: '127.0.0.1',
+        netWork: 'private',
+        cpuPerc: '1.73%',
+        menmoryPerc: '2.22%',
+        diskPerc: '4.33%',
+        operation: 'ii'
+      }],
       instanceId: '',
       cpuTotal: {},
       cpuSystem: {},
@@ -394,6 +481,9 @@ export default {
 </script>
 
 <style scoped>
+  #ecsMonitor {
+    height: 100%;
+  }
   .titleTab {
     padding: 10px 0 10px 10px;
     background-color: #efefef;
@@ -409,12 +499,7 @@ export default {
     flex-direction: row;
     margin: 5px 5px 5px 0;
   }
-/*.el-card {*/
-/*  width: 100%;*/
-/*  height: auto;*/
-/*  display: flex;*/
-/*  justify-content: space-between;*/
-/*  align-items: center;*/
-/*  flex-direction: column;*/
-/*}*/
+  .search {
+    display: flex;
+  }
 </style>

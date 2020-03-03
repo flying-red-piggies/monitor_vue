@@ -1,7 +1,7 @@
 <template>
   <div id="monitor">
     <div class="leftNav">
-      <el-menu :default-active="this.$router.path" router
+      <el-menu id="elMenu" :default-active="this.$router.path" router
                class="el-menu-vertical-demo"
                background-color="#545c64"
                text-color="#fff"
@@ -44,23 +44,15 @@ export default {
     overflow: scroll;
     background-color:#F0F0F0
   }
-  #monitor {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
   .leftNav {
-    width: 250px;
-    margin-right: 20px;
+    float: left;
+    width:250px;
+    padding: 10px;
+    padding-top: 0;
+    position: fixed;
   }
   .rightContent {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /*width: 100%;*/
-  }
-  #showContent {
-    margin-left: 20px;
-    margin-top: 20px;
+    margin-left: 280px;
+    overflow: hidden;
   }
 </style>
