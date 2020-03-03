@@ -8,12 +8,12 @@
                active-text-color="#ffd04b">
         <!--                  index写设置的路由路径-->
         <el-menu-item index="/generalView">
-          <i class="el-icon-s-home"></i>
+          <i class="el-icon-s-home"/>
           <span slot="title">概览</span>
         </el-menu-item>
         <el-submenu index="2">
           <template slot="title">
-            <i class="el-icon-video-camera"></i>
+            <i class="el-icon-video-camera"/>
             <span>监控数据</span>
           </template>
           <el-menu-item-group>
@@ -25,7 +25,7 @@
       </el-menu>
     </div>
     <div class="rightContent">
-      <router-view></router-view>
+      <router-view/>
     </div>
   </div>
 </template>

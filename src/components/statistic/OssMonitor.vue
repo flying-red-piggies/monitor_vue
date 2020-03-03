@@ -14,35 +14,41 @@
 <!--      </select>-->
 <!--    </label>-->
     <el-card class="box-card chartGroup">
-      <div class="titleTab">计量数据</div>
+      <div slot="header" class="clearfix">
+        <span>计量数据</span>
+      </div>
       <div class="group1">
-        <div id="storageUtilChart" style="width: 800px;height:300px;"></div>
+        <div id="storageUtilChart" style="width: 100%;height:300px;"></div>
       </div>
       <div class="group2">
-        <div id="getRequestChart" style="width: 400px;height:300px;"></div>
-        <div id="putRequestChart" style="width: 400px;height:300px;"></div>
+        <div id="getRequestChart" style="width: 50%;height:300px;"></div>
+        <div id="putRequestChart" style="width: 50%;height:300px;"></div>
       </div>
       <div class="group3">
-        <div id="internetRXChart" style="width: 400px;height:300px;"></div>
-        <div id="internetTXChart" style="width: 400px;height:300px;"></div>
+        <div id="internetRXChart" style="width: 50%;height:300px;"></div>
+        <div id="internetTXChart" style="width: 50%;height:300px;"></div>
       </div>
     </el-card>
     <el-card class="box-card chartGroup">
-      <div class="titleTab">用户层级数据</div>
+      <div slot="header" class="clearfix">
+        <span>用户层级数据</span>
+      </div>
       <div class="group1">
-        <div id="userRequestChart" style="width: 800px;height:300px;"></div>
+        <div id="userRequestChart" style="width: 100%;height:300px;"></div>
       </div>
       <div class="group2">
-        <div id="userTrafficChart" style="width: 800px;height:300px;"></div>
+        <div id="userTrafficChart" style="width: 100%;height:300px;"></div>
       </div>
     </el-card>
     <el-card class="box-card chartGroup">
-      <div class="titleTab">Bucket层级数据</div>
+      <div slot="header" class="clearfix">
+        <span>Bucket层级数据</span>
+      </div>
       <div class="group1">
-        <div id="bucketRequestChart" style="width: 800px;height:300px;"></div>
+        <div id="bucketRequestChart" style="width: 100%;height:300px;"></div>
       </div>
       <div class="group2">
-        <div id="bucketTrafficChart" style="width: 800px;height:300px;"></div>
+        <div id="bucketTrafficChart" style="width: 100%;height:300px;"></div>
       </div>
     </el-card>
   </div>

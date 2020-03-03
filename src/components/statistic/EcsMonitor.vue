@@ -11,7 +11,9 @@
       </el-option>
     </el-select>
     <el-card class="box-card chartGroup">
-      <div class="titleTab">CPU</div>
+      <div slot="header" class="clearfix">
+        <span>CPU</span>
+      </div>
       <div class="group1">
         <div id="cpuChart" style="width: 100%;height: 300px;"></div>
       </div>
@@ -31,9 +33,11 @@
 <!--    </el-card>-->
 <!--    -->
     <el-card shadow="always" class="box-card">
-      <div class="titleTab">系统负载</div>
+      <div slot="header" class="clearfix">
+        <span>系统负载</span>
+      </div>
       <div class="group2">
-        <div id="loadMChart" style="width: 800px;height:300px;"></div>
+        <div id="loadMChart" style="width: 100%;height:300px;"></div>
 <!--        <div id="load1MChart" style="width: 800px;height:300px;"></div>-->
       </div>
 <!--      <div class="group2">-->
@@ -45,26 +49,30 @@
 <!--    -->
 <!--    memory自己一组-->
     <el-card class="box-card chartGroup">
-      <div class="titleTab">内存</div>
+      <div slot="header" class="clearfix">
+        <span>内存</span>
+      </div>
       <div class="group1">
-        <div id="memoryChart" style="width: 800px;height:300px;"></div>
+        <div id="memoryChart" style="width: 100%;height:300px;"></div>
       </div>
     </el-card>
 <!--    -->
 <!--    disk五个一组-->
     <el-card class="box-card chartGroup">
-      <div class="titleTab">硬盘</div>
+      <div slot="header" class="clearfix">
+        <span>硬盘</span>
+      </div>
       <div>
         <div class="group1">
-          <div id="diskInodeChart" style="width: 800px;height:300px;"></div>
+          <div id="diskInodeChart" style="width: 100%;height:300px;"></div>
         </div>
         <div class="group2">
-          <div id="diskRateChart" style="width: 800px;height:300px;"></div>
+          <div id="diskRateChart" style="width: 100%;height:300px;"></div>
 <!--          <div id="diskRRateChart" style="width: 400px;height:300px;"></div>-->
 <!--          <div id="diskWRateChart" style="width: 400px;height:300px;"></div>-->
         </div>
         <div class="group3">
-          <div id="diskIopsChart" style="width: 800px;height:300px;"></div>
+          <div id="diskIopsChart" style="width: 100%;height:300px;"></div>
 <!--          <div id="diskRIopsChart" style="width: 400px;height:300px;"></div>-->
 <!--          <div id="diskWIopsChart" style="width: 400px;height:300px;"></div>-->
         </div>
@@ -72,20 +80,22 @@
     </el-card>
 <!--    -->
 <!--    最后五个一组-->
-    <div class="titleTab">网络</div>
     <el-card class="box-card chartGroup">
+      <div slot="header" class="clearfix">
+        <span>网络</span>
+      </div>
       <div>
         <div class="group1">
-          <div id="tcpConnectionChart" style="width: 800px;height:300px;"></div>
+          <div id="tcpConnectionChart" style="width: 100%;height:300px;"></div>
 
         </div>
         <div class="group2">
-          <div id="netbpsChart" style="width: 800px;height:300px;"></div>
+          <div id="netbpsChart" style="width: 100%;height:300px;"></div>
 <!--          <div id="netIRateChart" style="width: 400px;height:300px;"></div>-->
 <!--          <div id="netORateChart" style="width: 400px;height:300px;"></div>-->
         </div>
         <div class="group3">
-          <div id="netPpsChart" style="width: 800px;height:300px;"></div>
+          <div id="netPpsChart" style="width: 100%;height:300px;"></div>
 <!--          <div id="netIPpsChart" style="width: 400px;height:300px;"></div>-->
 <!--          <div id="netOPpsChart" style="width: 400px;height:300px;"></div>-->
         </div>
@@ -637,7 +647,7 @@ export default {
     drawLines (chart, option) {
       chart.setOption(option)
       chart.hideLoading()
-    },
+    }
     // drawLine (chart, chartName, metricArray) {
     //   let max = metricArray.map(function (item) {
     //     return item['maximum']
@@ -738,114 +748,6 @@ export default {
     //   chart.setOption(option)
     //   chart.hideLoading()
     // },
-    drawTcpConnection (chart, chartName, metricArray) {
-      let total = metricArray.filter(function (item) {
-        return item.state === 'TCP_TOTAL'
-      }).map(function (item) {
-        return item.average
-      })
-      let estb = metricArray.filter(function (item) {
-        return item.state === 'ESTABLISHED'
-      }).map(function (item) {
-        return item.average
-      })
-      let nestb = metricArray.filter(function (item, index, arr) {
-        return item.state === 'NON_ESTABLISHED'
-      }).map(function (item) {
-        return item.average
-      })
-      let times = metricArray.filter(function (item, index, arr) {
-        return index % 3 === 0
-      }).map(function (item) {
-        return moment(item.timestamp).format('YYYY/MM/DD HH:mm')
-      })
-      let option = {
-        backgroundColor: '#21202D',
-        legend: {
-          data: ['TCP_TOTAL', 'ESTABLISHED', 'NON_ESTABLISHED'],
-          inactiveColor: '#777',
-          textStyle: {
-            color: '#fff'
-          }
-        },
-        title: {
-          text: chartName,
-          textStyle: {
-            color: '#fff',
-            fontSize: 12
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            animation: false,
-            type: 'cross',
-            lineStyle: {
-              color: '#376df4',
-              width: 2,
-              opacity: 1
-            }
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: times,
-          axisLine: { lineStyle: { color: '#8392A5' } }
-        },
-        yAxis: {
-          scale: true,
-          axisLine: { lineStyle: { color: '#8392A5' } },
-          splitLine: { show: true }
-        },
-        grid: {
-          bottom: 80
-        },
-        dataZoom: [{
-          textStyle: {
-            color: '#8392A5'
-          },
-          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-          handleSize: '80%',
-          dataBackground: {
-            areaStyle: {
-              color: '#8392A5'
-            },
-            lineStyle: {
-              opacity: 0.8,
-              color: '#8392A5'
-            }
-          },
-          handleStyle: {
-            color: '#fff',
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.6)',
-            shadowOffsetX: 2,
-            shadowOffsetY: 2
-          }
-        }, {
-          type: 'inside'
-        }],
-        series: [
-          {
-            name: 'TCP_TOTAL',
-            type: 'line',
-            data: total
-          },
-          {
-            name: 'ESTABLISHED',
-            type: 'line',
-            data: estb
-          },
-          {
-            name: 'NON_ESTABLISHED',
-            type: 'line',
-            data: nestb
-          }
-        ]
-      }
-      chart.setOption(option)
-      chart.hideLoading()
-    }
   }
 }
 </script>
