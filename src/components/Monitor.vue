@@ -41,18 +41,22 @@ export default {
     margin:0px;
     width:100%;
     height: 100%;
-    overflow: scroll;
-    background-color:#F0F0F0
+    /*overflow: scroll;*/
+  }
+  #monitor {
+    margin: 0 auto;
+    padding: 20px;
   }
   .leftNav {
     float: left;
     width:250px;
-    padding: 10px;
-    padding-top: 0;
     position: fixed;
   }
+  .leftNav #elMenu {
+    height: 610px;
+  }
   .rightContent {
-    margin-left: 280px;
+    margin-left: 270px;
     overflow: hidden;
   }
 </style>
