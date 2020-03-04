@@ -18,8 +18,9 @@
           </template>
           <el-menu-item-group>
             <template slot="title">监控</template>
-            <el-menu-item index="/ecsMonitor">ecs监控</el-menu-item>
-            <el-menu-item index="/ossMonitor">oss监控</el-menu-item>
+            <el-menu-item index="/ecsMonitor">ECS监控</el-menu-item>
+            <el-menu-item index="/ossMonitor">OSS监控</el-menu-item>
+            <el-menu-item index="/rdsMonitor">RDS监控</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>

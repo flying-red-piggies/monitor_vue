@@ -4,6 +4,7 @@ import monitor from '../components/monitor'
 import generalView from '../components/general/generalView'
 import ecsMonitor from '../components/statistic/ecsMonitor'
 import ossMonitor from '../components/statistic/ossMonitor'
+import rdsMonitor from '../components/statistic/rdsMonitor'
 Vue.use(Router)
 
 export default new Router({
@@ -28,6 +29,11 @@ export default new Router({
           path: '/ossMonitor',
           name: 'ossMonitor',
           component: ossMonitor
+        },
+        {
+          path: '/rdsMonitor',
+          name: 'rdsMonitor',
+          component: rdsMonitor
         }
       ]
     }

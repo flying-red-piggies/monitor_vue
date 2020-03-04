@@ -4,7 +4,7 @@
                @change="refreshData(bucketName)">
       <el-option
         v-for="item in buckets"
-        :key="item.id"
+        :key="item.name"
         :value="item.name">
       </el-option>
     </el-select>
@@ -139,7 +139,7 @@ export default {
     },
     mapXTimes (resData) {
       return resData.map(function (item) {
-        return moment(item['timestamp']).format('YYYY/MM/DD HH:mm')
+        return moment(item['timestamp']).format('MM/DD HH:mm')
       })
     },
     refreshData (bucketName) {
@@ -322,6 +322,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin: 20px 0;
+    background-color: #545c64;
   }
   .group1,.group2,.group3 {
     display: flex;
