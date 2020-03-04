@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import monitor from '../components/monitor'
 import generalView from '../components/general/generalView'
+
+import ossMain from '../components/statistic/oss/ossMain'
+
 import ecsMonitor from '../components/statistic/ecsMonitor'
 import ossMonitor from '../components/statistic/ossMonitor'
 import rdsMonitor from '../components/statistic/rdsMonitor'
@@ -26,9 +29,16 @@ export default new Router({
           component: ecsMonitor
         },
         {
-          path: '/ossMonitor',
-          name: 'ossMonitor',
-          component: ossMonitor
+          path: '/ossMain',
+          name: 'ossMain',
+          component: ossMain,
+          children: [
+            {
+              path: '/ossMonitor',
+              name: 'ossMonitor',
+              component: ossMonitor
+            }
+          ]
         },
         {
           path: '/rdsMonitor',

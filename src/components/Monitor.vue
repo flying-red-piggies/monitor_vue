@@ -19,7 +19,7 @@
           <el-menu-item-group>
             <template slot="title">监控</template>
             <el-menu-item index="/ecsMonitor">ECS监控</el-menu-item>
-            <el-menu-item index="/ossMonitor">OSS监控</el-menu-item>
+            <el-menu-item index="/ossMain">OSS监控</el-menu-item>
             <el-menu-item index="/rdsMonitor">RDS监控</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
@@ -48,13 +48,12 @@ export default {
     margin: 0 auto;
     padding: 20px;
   }
-  .leftNav {
+  .leftNav #elMenu {
     float: left;
     width:250px;
     position: fixed;
-  }
-  .leftNav #elMenu {
     height: 610px;
+    border-right: 0;
   }
   .rightContent {
     margin-left: 270px;

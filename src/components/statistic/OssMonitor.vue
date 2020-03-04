@@ -1,13 +1,13 @@
 <template>
   <div id="ossMonitor">
-    <el-select v-model="bucketName" placeholder="请选择"
-               @change="refreshData(bucketName)">
-      <el-option
-        v-for="item in buckets"
-        :key="item.name"
-        :value="item.name">
-      </el-option>
-    </el-select>
+<!--    <el-select v-model="bucketName" placeholder="请选择"-->
+<!--               @change="refreshData(bucketName)">-->
+<!--      <el-option-->
+<!--        v-for="item in buckets"-->
+<!--        :key="item.name"-->
+<!--        :value="item.name">-->
+<!--      </el-option>-->
+<!--    </el-select>-->
 <!--    <label>-->
 <!--      <select @change="refreshData($event.target.value)">-->
 <!--        <option v-for="item in buckets" v-bind:key="item.id">{{item.name}}</option>-->
@@ -51,83 +51,83 @@
         <div id="bucketTrafficChart" style="width: 100%;height:300px;"></div>
       </div>
     </el-card>
-    <el-tabs type="border-card" v-model="activeTab">
-      <el-tab-pane label="实例列表" name="instance" :key="instance">
-        <div class="search">
-          <el-input class="elInput" placeholder="输入IP、主机名称或实例ID进行搜索"></el-input>
-          <el-button>搜索</el-button>
-          <el-button>同步主机信息</el-button>
-        </div>
-        <div>
-          <el-table
-            ref="multipleTable"
-            :data="instanceList"
-            tooltip-effect="dark"
-            style="width: 100%"
-            @selection-change="handleSelectionChange">
-            <el-table-column
-              type="selection"
-              width="55">
-            </el-table-column>
-            <el-table-column
-              label="实例name/主机名"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.name }}</template>
-            </el-table-column>
-            <el-table-column
-              label="插件状态（全部）"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.plugins }}</template>
-            </el-table-column>
-            <el-table-column
-              label="Agent版本">
-              <template slot-scope="scope">{{ scope.row.version }}</template>
-            </el-table-column>
-            <el-table-column
-              label="所在地域"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.origin }}</template>
-            </el-table-column>
-            <el-table-column
-              label="IP"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.IP }}</template>
-            </el-table-column>
-            <el-table-column
-              label="网络类型"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.netWork }}</template>
-            </el-table-column>
-            <el-table-column
-              label="CPU使用率"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.cpuPerc }}</template>
-            </el-table-column>
-            <el-table-column
-              label="内存使用率"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.menmoryPerc }}</template>
-            </el-table-column>
-            <el-table-column
-              label="磁盘使用率"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.diskPerc }}</template>
-            </el-table-column>
-            <el-table-column
-              label="操作"
-              width="120">
-              <el-link style="color: blue">监控图表报警规则</el-link>
-            </el-table-column>
-          </el-table>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>
-    </el-tabs>
+<!--    <el-tabs type="border-card" v-model="activeTab">-->
+<!--      <el-tab-pane label="实例列表" name="instance" :key="instance">-->
+<!--        <div class="search">-->
+<!--          <el-input class="elInput" placeholder="输入IP、主机名称或实例ID进行搜索"></el-input>-->
+<!--          <el-button>搜索</el-button>-->
+<!--          <el-button>同步主机信息</el-button>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <el-table-->
+<!--            ref="multipleTable"-->
+<!--            :data="instanceList"-->
+<!--            tooltip-effect="dark"-->
+<!--            style="width: 100%"-->
+<!--            @selection-change="handleSelectionChange">-->
+<!--            <el-table-column-->
+<!--              type="selection"-->
+<!--              width="55">-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="实例name/主机名"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.name }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="插件状态（全部）"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.plugins }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="Agent版本">-->
+<!--              <template slot-scope="scope">{{ scope.row.version }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="所在地域"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.origin }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="IP"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.IP }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="网络类型"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.netWork }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="CPU使用率"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.cpuPerc }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="内存使用率"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.menmoryPerc }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="磁盘使用率"-->
+<!--              width="120">-->
+<!--              <template slot-scope="scope">{{ scope.row.diskPerc }}</template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column-->
+<!--              label="操作"-->
+<!--              width="120">-->
+<!--              <el-link style="color: blue">监控图表报警规则</el-link>-->
+<!--            </el-table-column>-->
+<!--          </el-table>-->
+<!--        </div>-->
+<!--      </el-tab-pane>-->
+<!--      <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>-->
+<!--    </el-tabs>-->
   </div>
 </template>
 
 <script>
-import ossInfo from '@/api/oss/ossInfo'
+// import ossInfo from '@/api/oss/ossInfo'
 import ossMetric from '@/api/oss/ossMetric'
 import moment from 'moment'
 
@@ -138,11 +138,12 @@ export default {
     this.showLoading()
   },
   created () {
-    ossInfo.getBuckets().then(res => {
-      this.buckets = res.data
-      this.bucketName = res.data[0].name
-      this.refreshData(this.bucketName)
-    })
+    // ossInfo.getBuckets().then(res => {
+    //   this.buckets = res.data
+    //   this.bucketName = res.data[0].name
+    //   this.refreshData(this.bucketName)
+    // })
+    this.bucketName = this.$route.query.bucketName
   },
   data () {
     return {
@@ -408,6 +409,7 @@ export default {
     flex-direction: column;
     margin: 20px 0;
     background-color: #545c64;
+    border-width: 0;
   }
   .group1,.group2,.group3 {
     display: flex;

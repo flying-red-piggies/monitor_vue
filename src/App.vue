@@ -12,11 +12,11 @@ export default {
 
 <style>
   body {
-    background-color: gray;
+    background-color: #545c64;
     margin:0px;
     width:100%;
     height: 100%;
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
 /*#app {*/
 /*  font-family: 'Avenir', Helvetica, Arial, sans-serif;*/

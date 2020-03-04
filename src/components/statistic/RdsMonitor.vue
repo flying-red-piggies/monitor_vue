@@ -260,6 +260,7 @@ export default {
     flex-direction: column;
     margin: 20px 0;
     background-color: #545c64;
+    border-width: 0;
   }
   .group1,.group2,.group3 {
     display: flex;
