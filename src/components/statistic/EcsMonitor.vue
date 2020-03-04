@@ -755,7 +755,7 @@ export default {
 <style scoped>
   .titleTab {
     padding: 10px 0 10px 10px;
-    background-color: #efefef;
+    /*background-color: #efefef;*/
     width: 800px;
   }
   .chartGroup {

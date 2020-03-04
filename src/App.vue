@@ -11,6 +11,13 @@ export default {
 </script>
 
 <style>
+  body {
+    background-color: gray;
+    margin:0px;
+    width:100%;
+    height: 100%;
+    overflow: scroll;
+  }
 /*#app {*/
 /*  font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
 /*  -webkit-font-smoothing: antialiased;*/
