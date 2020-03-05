@@ -40,7 +40,7 @@
             label="操作"
             width="120">
             <template slot-scope="scope">
-              <el-link style="color: blue" @click="showChart(scope.row)">监控图表报警规则</el-link>
+              <el-link style="color: blue" @click="showChart(scope.row)">监控图表</el-link>
             </template>
           </el-table-column>
         </el-table>

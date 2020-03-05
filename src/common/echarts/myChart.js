@@ -41,12 +41,13 @@ export default {
   getChartOption (chartName, dataNames, series, xTime) {
     return {
       backgroundColor: '#0a0c13',
-      color: ['#d32724', '#3198a2', '#2c8161', '#7c8b02',
+      color: ['#d32724', '#1351e6', '#2c8161', '#c2d602',
         '#a01cbd', '#ab715b', '#ff791c', '#c4759a',
         '#12088b', '#23d109'],
       legend: {
         data: dataNames,
         inactiveColor: '#777',
+        top: '7%',
         textStyle: {
           color: '#fff',
           fontSize: 10,
@@ -84,6 +85,7 @@ export default {
         splitLine: {show: true}
       },
       grid: {
+        top: '25%',
         bottom: 80
       },
       dataZoom: [{

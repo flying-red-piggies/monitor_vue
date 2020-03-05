@@ -121,7 +121,7 @@ export default {
         let dataNames = ['meteringStorageUtilization']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
-        myChart.drawLiness(this.storageUtil, myChart.getChartOption('存储用量(B)', dataNames, lines, myChart.mapXTimes(res.data)))
+        myChart.drawLines(this.storageUtil, myChart.getChartOption('存储用量(B)', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getGetRequest(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = ['meteringGetRequest']
