@@ -10,8 +10,8 @@
           ref="multipleTable"
           :data="bucketList"
           tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="handleSelectionChange">
+          style="width: 100%">
+<!--          @selection-change="handleSelectionChange"-->
           <el-table-column
             type="selection"
             width="55">
@@ -38,14 +38,16 @@
           <el-table-column
             label="操作"
             width="120">
-            <router-link slot-scope="scope" style="color: blue" :to="{name:'ossMonitor', query:{bucketName: scope.row.name}}">监控图表报警规则</router-link>
+            <template slot-scope="scope">
+              <el-link style="color: blue" @click="showChart(scope.row)">监控图表报警规则</el-link>
+            </template>
           </el-table-column>
         </el-table>
       </div>
     </el-tab-pane>
     <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>
   </el-tabs>
-  <router-view/>
+<!--  <router-view/>-->
 </template>
 
 <script>
@@ -63,6 +65,11 @@ export default {
     return {
       activeTab: 'instance',
       bucketList: []
+    }
+  },
+  methods: {
+    showChart: function (scopedRow) {
+      this.$router.push({name: 'ossMonitor', params: {bucketName: scopedRow.name}})
     }
   }
 }

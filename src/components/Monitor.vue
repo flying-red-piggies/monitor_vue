@@ -33,7 +33,12 @@
 
 <script>
 export default {
-  name: 'monitor'
+  name: 'monitor',
+  watch: {
+    $route (to, from) {
+      console.log('routerPath: ' + to.path)
+    }
+  }
 }
 </script>
 

@@ -31,14 +31,19 @@ export default new Router({
         {
           path: '/ossMain',
           name: 'ossMain',
-          component: ossMain,
-          children: [
-            {
-              path: '/ossMonitor',
-              name: 'ossMonitor',
-              component: ossMonitor
-            }
-          ]
+          component: ossMain
+          // children: [
+          //   {
+          //     path: '/ossMonitor',
+          //     name: 'ossMonitor',
+          //     component: ossMonitor
+          //   }
+          // ]
+        },
+        {
+          path: '/ossMonitor',
+          name: 'ossMonitor',
+          component: ossMonitor
         },
         {
           path: '/rdsMonitor',
