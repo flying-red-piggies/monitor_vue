@@ -33,7 +33,7 @@ export default {
     border-color: #09121b;
   }
   span {
-    color: #3198a2;
+    color: #3a8ee6;
   }
   .el-tabs {
     border-width: 0;

@@ -5,7 +5,7 @@
                class="el-menu-vertical-demo"
                background-color="#0a0c13"
                text-color="#fff"
-               active-text-color="#3198a2">
+               active-text-color="#3a8ee6">
         <!--                  index写设置的路由路径-->
         <el-menu-item index="/generalView">
           <i class="el-icon-s-home"/>

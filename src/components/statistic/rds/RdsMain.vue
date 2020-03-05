@@ -4,7 +4,7 @@
       <el-tab-pane label="实例列表" name="instance">
         <div class="search">
           <el-input class="elInput" placeholder="输入实例id或名称进行搜索"/>
-          <el-button>搜索</el-button>
+          <el-button class="searchBtn">搜索</el-button>
         </div>
         <div>
           <el-table

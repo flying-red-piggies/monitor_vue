@@ -4,7 +4,7 @@
         <el-tab-pane label="Bucket列表" name="bucket" @click="tabChange('bucket')">
           <div class="search">
             <el-input class="elInput" v-model="bucketName" placeholder="输入Bucket名称进行搜索"/>
-            <el-button class="searchBtn" style="color: #3a8ee6;">搜索</el-button>
+            <el-button class="searchBtn">搜索</el-button>
           </div>
           <div>
             <el-table
@@ -91,10 +91,22 @@ export default {
   }
   .search .searchBtn {
     height: 40px;
+    background: #0a0c13;
+    border: 1px solid #122f5c;
+  }
+  .search .searchBtn:hover {
+    height: 40px;
+    background: #1a2032;
+    border: 1px solid #122f5c;
   }
   .el-input > input {
     background-color: rgb(18, 47, 92);
     border-style: none;
+  }
+  .el-table {
+    border-style: solid;
+    border-color: rgb(18, 47, 92);
+    border-width: 1px;
   }
   /*表头样式*/
   .el-table .el-table__header-wrapper tr th{
@@ -118,5 +130,11 @@ export default {
   .el-table th.is-leaf{
     border-bottom: 1px solid #3a8ee6;
     border-right:1px solid #3a8ee6;
+  }
+  .el-table::before {
+    background-color: #0a0c13;
+  }
+  .el-table__empty-block {
+    background-color: #0D1F34;
   }
 </style>
