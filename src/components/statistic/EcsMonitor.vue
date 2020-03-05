@@ -296,7 +296,4 @@ export default {
     flex-direction: row;
     margin: 5px 5px 5px 0;
   }
-  .search {
-    display: flex;
-  }
 </style>

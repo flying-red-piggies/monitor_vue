@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-tabs type="border-card" v-model="activeTab">
-      <el-tab-pane label="实例列表" name="instance">
+    <el-tabs v-model="activeTab">
+      <el-tab-pane label="实例列表" name="instance" @click="tabChange('instance')">
         <div class="search">
           <el-input class="elInput" placeholder="输入实例ID或名称进行搜索"/>
           <el-button>搜索</el-button>
@@ -12,7 +12,6 @@
             :data="instanceList"
             tooltip-effect="dark"
             style="width: 100%">
-            <!--          @selection-change="handleSelectionChange">-->
             <el-table-column
               type="selection"
               width="55">
@@ -47,7 +46,7 @@
           </el-table>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>
+      <el-tab-pane label="报警规则" name="warn" @click="tabChange('warn')">报警规则</el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -69,6 +68,9 @@ export default {
     }
   },
   methods: {
+    tabChange (activeTabName) {
+      this.activeTab = activeTabName
+    },
     showChart: function (scopedRow) {
       this.$router.push({name: 'ecsMonitor', params: {instanceId: scopedRow.instanceId}})
     }
@@ -77,5 +79,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .search {
+    display: flex;
+  }
 </style>

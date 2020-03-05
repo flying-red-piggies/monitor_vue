@@ -35,6 +35,42 @@ export default {
   span {
     color: #3198a2;
   }
+  .el-tabs {
+    border-width: 0;
+  }
+  .el-tabs__active-bar {
+    background-color: #0a0c13;
+  }
+  .el-tabs__item {
+    color: #3a8ee6;
+    padding: 0 0;
+  }
+  .el-tabs__item.is-top {
+    width: 100%;
+    text-align: center;
+  }
+  .el-tabs__item::after {
+    color: #3a8ee6;
+    border-color: #0a0c13;
+  }
+  .el-tabs>.el-tabs__header .el-tabs__item.is-active {
+    background-color: #0a0c13;
+    border-color: #0a0c13;
+  }
+  .el-tabs>.el-tabs__header {
+    background-color: #0a0c13;
+    border-color: #3a8ee6;
+  }
+  .el-tabs__nav-wrap::after {
+    background-color: #3a8ee6;
+  }
+  .el-tabs__nav-wrap::before {
+    background-color: #3a8ee6;
+  }
+  .el-tabs__nav.is-top {
+    border-color: #3a8ee6;
+  }
+
 /*#app {*/
 /*  font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
 /*  -webkit-font-smoothing: antialiased;*/

@@ -1,7 +1,7 @@
 <template>
   <div>
-  <el-tabs type="border-card" v-model="activeTab">
-    <el-tab-pane label="Bucket列表" name="bucket">
+  <el-tabs v-model="activeTab">
+    <el-tab-pane label="Bucket列表" name="bucket" @click="tabChange('bucket')">
       <div class="search">
         <el-input class="elInput" placeholder="输入Bucket名称进行搜索"/>
         <el-button>搜索</el-button>
@@ -46,7 +46,7 @@
         </el-table>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>
+    <el-tab-pane label="报警规则" name="warn" @click="tabChange('warn')">报警规则</el-tab-pane>
   </el-tabs>
   </div>
 </template>
@@ -69,6 +69,9 @@ export default {
     }
   },
   methods: {
+    tabChange (activeName) {
+      this.activeTab = activeName
+    },
     showChart: function (scopedRow) {
       this.$router.push({name: 'ossMonitor', params: {bucketName: scopedRow.name}})
     }
@@ -77,5 +80,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .search {
+    display: flex;
+  }
 </style>

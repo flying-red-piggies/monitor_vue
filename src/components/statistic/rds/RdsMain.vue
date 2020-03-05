@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs type="border-card" v-model="activeTab">
+    <el-tabs v-model="activeTab" @click="tabChange('instance')">
       <el-tab-pane label="实例列表" name="instance">
         <div class="search">
           <el-input class="elInput" placeholder="输入实例id或名称进行搜索"/>
@@ -55,7 +55,7 @@
           </el-table>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>
+      <el-tab-pane label="报警规则" name="warn" @click="tabChange('instance')">报警规则</el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -77,6 +77,9 @@ export default {
     }
   },
   methods: {
+    tabChange (activeName) {
+      this.activeTab = activeName
+    },
     showChart: function (scopedRow) {
       this.$router.push({name: 'rdsMonitor', params: {dBInstanceId: scopedRow.dBInstanceId}})
     }
@@ -85,5 +88,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .search {
+    display: flex;
+  }
 </style>
