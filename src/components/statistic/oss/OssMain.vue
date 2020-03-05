@@ -1,6 +1,7 @@
 <template>
+  <div>
   <el-tabs type="border-card" v-model="activeTab">
-    <el-tab-pane label="Bucket列表" name="instance" :key="instance">
+    <el-tab-pane label="Bucket列表" name="bucket">
       <div class="search">
         <el-input class="elInput" placeholder="输入Bucket名称进行搜索"/>
         <el-button>搜索</el-button>
@@ -10,8 +11,8 @@
           ref="multipleTable"
           :data="bucketList"
           tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="handleSelectionChange">
+          style="width: 100%">
+<!--          @selection-change="handleSelectionChange">-->
           <el-table-column
             type="selection"
             width="55">
@@ -38,18 +39,18 @@
           <el-table-column
             label="操作"
             width="120">
-            <router-link slot-scope="scope" style="color: blue" :to="{name:'ossMonitor', query:{bucketName: scope.row.name}}">监控图表报警规则</router-link>
+            <router-link slot-scope="scope" style="color: blue" :to="{path:'/ossMonitor', query:{bucketName: scope.row.name}}">监控图表</router-link>
           </el-table-column>
         </el-table>
       </div>
     </el-tab-pane>
     <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>
   </el-tabs>
-  <router-view/>
+  </div>
 </template>
 
 <script>
-import ossInfo from '@/api/oss/ossInfo'
+import ossInfo from '../../../api/oss/OssInfo'
 
 export default {
   name: 'ossMain',
@@ -61,7 +62,7 @@ export default {
   },
   data () {
     return {
-      activeTab: 'instance',
+      activeTab: 'bucket',
       bucketList: []
     }
   }

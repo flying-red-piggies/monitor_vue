@@ -1,15 +1,15 @@
 <template>
   <div id="ecsMonitor">
-    <el-form-item label="选择实例"/>
-    <el-select v-model="instanceId" placeholder="请选择"
-               @change="refreshData(instanceId)"
-    style="margin-bottom: 20px;">
-      <el-option
-        v-for="item in instances"
-        :key="item.instanceId"
-        :value="item.instanceId">
-      </el-option>
-    </el-select>
+<!--    <el-form-item label="选择实例"/>-->
+<!--    <el-select v-model="instanceId" placeholder="请选择"-->
+<!--               @change="refreshData(instanceId)"-->
+<!--    style="margin-bottom: 20px;">-->
+<!--      <el-option-->
+<!--        v-for="item in instances"-->
+<!--        :key="item.instanceId"-->
+<!--        :value="item.instanceId">-->
+<!--      </el-option>-->
+<!--    </el-select>-->
     <el-card class="box-card chartGroup">
       <div slot="header" class="clearfix">
         <span>CPU</span>
@@ -148,27 +148,29 @@
 </template>
 
 <script>
-import ecsInfo from '@/api/ecs/ecsInfo'
-import ecsMetric from '@/api/ecs/ecsMetric'
+import ecsMetric from '../../api/ecs/EcsMetric'
+import myChart from '../../common/echarts/myChart'
 import moment from 'moment'
+
 export default {
   name: 'ecsMonitor',
   mounted () {
     this.initCharts()
     this.showLoading()
+    this.refreshData(this.instanceId)
   },
   created () {
-    ecsInfo.getInstances().then(res => {
-      console.log(res.data)
-      this.instances = res.data
-      this.instanceId = res.data[0].instanceId
-      this.refreshData(this.instanceId)
-    })
+    // ecsInfo.getInstances().then(res => {
+    //   console.log(res.data)
+    //   this.instances = res.data
+    //   this.instanceId = res.data[0].instanceId
+    //
+    // })
+    this.instanceId = this.$route.query.instanceId
   },
   data () {
     return {
       activeTab: 'instance',
-      instances: [],
       instanceList: [{
         name: '1234',
         plugins: 'running',
@@ -208,12 +210,10 @@ export default {
         let cpuUser = value[2].map(function (item) {
           return item.average
         })
-        let time = value[0].map(function (item) {
-          return moment(item.timestamp).format('MM/DD HH:mm')
-        })
+        let time = myChart.mapXTimes(value[0])
         let dataNames = ['CPU总使用率', '内核空间使用率', '用户空间使用率']
-        let lines = this.getLines(dataNames, [cpuTotal, cpuUser, cpuSystem])
-        this.drawLines(this.cpu, this.getChartOption('CPU使用率', dataNames, lines, time))
+        let lines = myChart.getLines(dataNames, [cpuTotal, cpuUser, cpuSystem])
+        myChart.drawLines(this.cpu, myChart.getChartOption('CPU使用率', dataNames, lines, time))
       })
     },
     getLoad (instanceId, startTime, endTime, interval) {
@@ -230,12 +230,10 @@ export default {
         let load15m = value[2].map(function (item) {
           return item.average
         })
-        let time = value[0].map(function (item) {
-          return moment(item.timestamp).format('MM/DD HH:mm')
-        })
+        let time = myChart.mapXTimes(value[0])
         let dataNames = ['过去1分钟', '过去5分钟', '过去15分钟']
-        let lines = this.getLines(dataNames, [load1m, load5m, load15m])
-        this.drawLines(this.loadM, this.getChartOption('系统平均负载', dataNames, lines, time))
+        let lines = myChart.getLines(dataNames, [load1m, load5m, load15m])
+        myChart.drawLines(this.loadM, myChart.getChartOption('系统平均负载', dataNames, lines, time))
       })
     },
     getDiskRate (instanceId, startTime, endTime, interval) {
@@ -248,12 +246,10 @@ export default {
         let write = value[1].map(function (item) {
           return item.average
         })
-        let time = value[0].map(function (item) {
-          return moment(item.timestamp).format('MM/DD HH:mm')
-        })
+        let time = myChart.mapXTimes(value[0])
         let dataNames = ['读字节数', '写字节数']
-        let lines = this.getLines(dataNames, [read, write])
-        this.drawLines(this.diskRate, this.getChartOption('磁盘读写速率(Bps)', dataNames, lines, time))
+        let lines = myChart.getLines(dataNames, [read, write])
+        myChart.drawLines(this.diskRate, myChart.getChartOption('磁盘读写速率(Bps)', dataNames, lines, time))
       })
     },
     getDiskIops (instanceId, startTime, endTime, interval) {
@@ -266,12 +262,10 @@ export default {
         let write = value[1].map(function (item) {
           return item.average
         })
-        let time = value[0].map(function (item) {
-          return moment(item.timestamp).format('MM/DD HH:mm')
-        })
+        let time = myChart.mapXTimes(value[0])
         let dataNames = ['读IOPS', '写IOPS']
-        let lines = this.getLines(dataNames, [read, write])
-        this.drawLines(this.diskIops, this.getChartOption('磁盘读写请求数', dataNames, lines, time))
+        let lines = myChart.getLines(dataNames, [read, write])
+        myChart.drawLines(this.diskIops, myChart.getChartOption('磁盘读写请求数', dataNames, lines, time))
       })
     },
     getNetBPS (instanceId, startTime, endTime, interval) {
@@ -284,12 +278,10 @@ export default {
         let outB = value[1].map(function (item) {
           return item.average
         })
-        let time = value[0].map(function (item) {
-          return moment(item.timestamp).format('MM/DD HH:mm')
-        })
+        let time = myChart.mapXTimes(value[0])
         let dataNames = ['流入速率', '流出速率']
-        let lines = this.getLines(dataNames, [inB, outB])
-        this.drawLines(this.netbps, this.getChartOption('网络流入流出速率(bps)', dataNames, lines, time))
+        let lines = myChart.getLines(dataNames, [inB, outB])
+        myChart.drawLines(this.netbps, myChart.getChartOption('网络流入流出速率(bps)', dataNames, lines, time))
       })
     },
     getNetPPS (instanceId, startTime, endTime, interval) {
@@ -302,12 +294,10 @@ export default {
         let outP = value[1].map(function (item) {
           return item.average
         })
-        let time = value[0].map(function (item) {
-          return moment(item.timestamp).format('MM/DD HH:mm')
-        })
+        let time = myChart.mapXTimes(value[0])
         let dataNames = ['流入数', '流出数']
-        let lines = this.getLines(dataNames, [inP, outP])
-        this.drawLines(this.netPps, this.getChartOption('网络流入流出数据包(pps)', dataNames, lines, time))
+        let lines = myChart.getLines(dataNames, [inP, outP])
+        myChart.drawLines(this.netPps, myChart.getChartOption('网络流入流出数据包(pps)', dataNames, lines, time))
       })
     },
     initCharts () {
@@ -322,47 +312,16 @@ export default {
       this.tcpConnection = this.$echarts.init(document.getElementById('tcpConnectionChart'))
     },
     showLoading () {
-      this.cpu.showLoading({
-        text: '正在加载'
-      })
-      this.loadM.showLoading({
-        text: '正在加载'
-      })
-      this.memory.showLoading({
-        text: '正在加载'
-      })
-      this.diskInode.showLoading({
-        text: '正在加载'
-      })
-      this.diskRate.showLoading({
-        text: '正在加载'
-      })
-      this.diskIops.showLoading({
-        text: '正在加载'
-      })
-      this.netbps.showLoading({
-        text: '正在加载'
-      })
-      this.netPps.showLoading({
-        text: '正在加载'
-      })
-      this.tcpConnection.showLoading({
-        text: '正在加载'
-      })
-    },
-    mapDataPoints (resData, dataNames) {
-      let dataPoints = []
-      for (let i = 0; i < dataNames.length; i++) {
-        dataPoints.push(resData.map(function (item) {
-          return item[dataNames[i]]
-        }))
-      }
-      return dataPoints
-    },
-    mapXTimes (resData) {
-      return resData.map(function (item) {
-        return moment(item['timestamp']).format('MM/DD HH:mm')
-      })
+      let loading = myChart.loading
+      this.cpu.showLoading(loading)
+      this.loadM.showLoading(loading)
+      this.memory.showLoading(loading)
+      this.diskInode.showLoading(loading)
+      this.diskRate.showLoading(loading)
+      this.diskIops.showLoading(loading)
+      this.netbps.showLoading(loading)
+      this.netPps.showLoading(loading)
+      this.tcpConnection.showLoading(loading)
     },
     refreshData (instanceId) {
       this.showLoading()
@@ -377,15 +336,15 @@ export default {
       this.getNetPPS(instanceId, startTime, endTime, interval)
       ecsMetric.getMemory(instanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['maximum', 'minimum', 'average']
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLines(this.memory, this.getChartOption('内存使用率', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.memory, myChart.getChartOption('内存使用率', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ecsMetric.getDiskInode(instanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['maximum', 'minimum', 'average']
-        let dataPoints = this.mapDataPoints(res, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLines(this.diskInode, this.getChartOption('磁盘inode使用率', dataNames, lines, this.mapXTimes(res)))
+        let dataPoints = myChart.mapDataPoints(res, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.diskInode, myChart.getChartOption('磁盘inode使用率', dataNames, lines, myChart.mapXTimes(res)))
       })
       ecsMetric.getTcpConnection(instanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['TCP_TOTAL', 'ESTABLISHED', 'NON_ESTABLISHED']
@@ -409,94 +368,9 @@ export default {
         }).map(function (item) {
           return moment(item.timestamp).format('YYYY/MM/DD HH:mm')
         })
-        let lines = this.getLines(dataNames, [total, estb, nestb])
-        this.drawLines(this.tcpConnection, this.getChartOption('TCP连接数', dataNames, lines, times))
+        let lines = myChart.getLines(dataNames, [total, estb, nestb])
+        myChart.drawLines(this.tcpConnection, myChart.getChartOption('TCP连接数', dataNames, lines, times))
       })
-    },
-    getLines (names, dataPoints) {
-      let series = []
-      for (let i = 0; i < names.length; i++) {
-        series.push({
-          name: names[i],
-          type: 'line',
-          data: dataPoints[i]
-        })
-      }
-      return series
-    },
-    getChartOption (chartName, dataNames, series, xTime) {
-      return {
-        backgroundColor: '#21202D',
-        legend: {
-          data: dataNames,
-          inactiveColor: '#777',
-          textStyle: {
-            color: '#fff'
-          }
-        },
-        title: {
-          text: chartName,
-          textStyle: {
-            color: '#fff',
-            fontSize: 12
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            animation: false,
-            type: 'cross',
-            lineStyle: {
-              color: '#376df4',
-              width: 2,
-              opacity: 1
-            }
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: xTime,
-          axisLine: {lineStyle: {color: '#8392A5'}}
-        },
-        yAxis: {
-          scale: true,
-          axisLine: {lineStyle: {color: '#8392A5'}},
-          splitLine: {show: true}
-        },
-        grid: {
-          bottom: 80
-        },
-        dataZoom: [{
-          textStyle: {
-            color: '#8392A5'
-          },
-          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-          handleSize: '80%',
-          dataBackground: {
-            areaStyle: {
-              color: '#8392A5'
-            },
-            lineStyle: {
-              opacity: 0.8,
-              color: '#8392A5'
-            }
-          },
-          handleStyle: {
-            color: '#fff',
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.6)',
-            shadowOffsetX: 2,
-            shadowOffsetY: 2
-          }
-        }, {
-          type: 'inside'
-        }],
-        series: series
-      }
-    },
-    drawLines (chart, option) {
-      chart.setOption(option)
-      chart.hideLoading()
     }
   }
 }
@@ -507,14 +381,6 @@ export default {
     padding: 10px 0 10px 10px;
     /*background-color: #efefef;*/
     width: 800px;
-  }
-  .chartGroup {
-    /*width: 100%;*/
-    display: flex;
-    flex-direction: column;
-    margin: 20px 0;
-    background-color: #545c64;
-    border-width: 0;
   }
   .group1,.group2,.group3 {
     display: flex;

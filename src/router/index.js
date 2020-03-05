@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import monitor from '../components/monitor'
-import generalView from '../components/general/generalView'
+import monitor from '../components/Monitor'
+import generalView from '../components/general/GeneralView'
 
-import ossMain from '../components/statistic/oss/ossMain'
+import ecsMain from '../components/statistic/ecs/EcsMain'
+import ossMain from '../components/statistic/oss/OssMain'
+import rdsMain from '../components/statistic/rds/RdsMain'
 
-import ecsMonitor from '../components/statistic/ecsMonitor'
-import ossMonitor from '../components/statistic/ossMonitor'
-import rdsMonitor from '../components/statistic/rdsMonitor'
+import ecsMonitor from '../components/statistic/EcsMonitor'
+import ossMonitor from '../components/statistic/OssMonitor'
+import rdsMonitor from '../components/statistic/RdsMonitor'
 Vue.use(Router)
 
 export default new Router({
@@ -19,29 +21,37 @@ export default new Router({
       children: [
         //  概览
         {
-          path: '/generalView',
+          path: 'generalView',
           name: 'generalView',
           component: generalView
         },
         {
-          path: '/ecsMonitor',
+          path: 'ecsMain',
+          name: 'ecsMain',
+          component: ecsMain
+        },
+        {
+          path: 'ecsMonitor',
           name: 'ecsMonitor',
           component: ecsMonitor
         },
         {
-          path: '/ossMain',
+          path: 'ossMain',
           name: 'ossMain',
-          component: ossMain,
-          children: [
-            {
-              path: '/ossMonitor',
-              name: 'ossMonitor',
-              component: ossMonitor
-            }
-          ]
+          component: ossMain
         },
         {
-          path: '/rdsMonitor',
+          path: 'ossMonitor',
+          name: 'ossMonitor',
+          component: ossMonitor
+        },
+        {
+          path: 'rdsMain',
+          name: 'rdsMain',
+          component: rdsMain
+        },
+        {
+          path: 'rdsMonitor',
           name: 'rdsMonitor',
           component: rdsMonitor
         }

@@ -1,20 +1,7 @@
 <template>
   <div id="ossMonitor">
-<!--    <el-select v-model="bucketName" placeholder="请选择"-->
-<!--               @change="refreshData(bucketName)">-->
-<!--      <el-option-->
-<!--        v-for="item in buckets"-->
-<!--        :key="item.name"-->
-<!--        :value="item.name">-->
-<!--      </el-option>-->
-<!--    </el-select>-->
-<!--    <label>-->
-<!--      <select @change="refreshData($event.target.value)">-->
-<!--        <option v-for="item in buckets" v-bind:key="item.id">{{item.name}}</option>-->
-<!--      </select>-->
-<!--    </label>-->
     <el-card class="box-card chartGroup">
-      <div slot="header" class="clearfix">
+      <div slot="header">
         <span>计量数据</span>
       </div>
       <div class="group1">
@@ -30,7 +17,7 @@
       </div>
     </el-card>
     <el-card class="box-card chartGroup">
-      <div slot="header" class="clearfix">
+      <div slot="header">
         <span>用户层级数据</span>
       </div>
       <div class="group1">
@@ -41,7 +28,7 @@
       </div>
     </el-card>
     <el-card class="box-card chartGroup">
-      <div slot="header" class="clearfix">
+      <div slot="header">
         <span>Bucket层级数据</span>
       </div>
       <div class="group1">
@@ -51,84 +38,12 @@
         <div id="bucketTrafficChart" style="width: 100%;height:300px;"></div>
       </div>
     </el-card>
-<!--    <el-tabs type="border-card" v-model="activeTab">-->
-<!--      <el-tab-pane label="实例列表" name="instance" :key="instance">-->
-<!--        <div class="search">-->
-<!--          <el-input class="elInput" placeholder="输入IP、主机名称或实例ID进行搜索"></el-input>-->
-<!--          <el-button>搜索</el-button>-->
-<!--          <el-button>同步主机信息</el-button>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--          <el-table-->
-<!--            ref="multipleTable"-->
-<!--            :data="instanceList"-->
-<!--            tooltip-effect="dark"-->
-<!--            style="width: 100%"-->
-<!--            @selection-change="handleSelectionChange">-->
-<!--            <el-table-column-->
-<!--              type="selection"-->
-<!--              width="55">-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="实例name/主机名"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.name }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="插件状态（全部）"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.plugins }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="Agent版本">-->
-<!--              <template slot-scope="scope">{{ scope.row.version }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="所在地域"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.origin }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="IP"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.IP }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="网络类型"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.netWork }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="CPU使用率"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.cpuPerc }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="内存使用率"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.menmoryPerc }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="磁盘使用率"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.diskPerc }}</template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--              label="操作"-->
-<!--              width="120">-->
-<!--              <el-link style="color: blue">监控图表报警规则</el-link>-->
-<!--            </el-table-column>-->
-<!--          </el-table>-->
-<!--        </div>-->
-<!--      </el-tab-pane>-->
-<!--      <el-tab-pane label="报警规则" name="warn" :key="warn">报警规则</el-tab-pane>-->
-<!--    </el-tabs>-->
   </div>
 </template>
 
 <script>
-// import ossInfo from '@/api/oss/ossInfo'
-import ossMetric from '@/api/oss/ossMetric'
+import ossMetric from '../../api/oss/OssMetric'
+import myChart from '../../common/echarts/myChart'
 import moment from 'moment'
 
 export default {
@@ -136,6 +51,7 @@ export default {
   mounted () {
     this.initCharts()
     this.showLoading()
+    this.refreshData(this.bucketName)
   },
   created () {
     // ossInfo.getBuckets().then(res => {
@@ -147,20 +63,19 @@ export default {
   },
   data () {
     return {
-      activeTab: 'instance',
-      instanceList: [{
-        name: '1234',
-        plugins: 'running',
-        version: '2.1.1',
-        origin: 'south',
-        IP: '127.0.0.1',
-        netWork: 'private',
-        cpuPerc: '1.73%',
-        menmoryPerc: '2.22%',
-        diskPerc: '4.33%',
-        operation: 'ii'
-      }],
-      buckets: [],
+      // activeTab: 'instance',
+      // instanceList: [{
+      //   name: '1234',
+      //   plugins: 'running',
+      //   version: '2.1.1',
+      //   origin: 'south',
+      //   IP: '127.0.0.1',
+      //   netWork: 'private',
+      //   cpuPerc: '1.73%',
+      //   menmoryPerc: '2.22%',
+      //   diskPerc: '4.33%',
+      //   operation: 'ii'
+      // }],
       bucketName: '',
       storageUtil: {},
       getRequest: {},
@@ -186,47 +101,16 @@ export default {
       this.bucketTraffic = this.$echarts.init(document.getElementById('bucketTrafficChart'))
     },
     showLoading () {
-      this.storageUtil.showLoading({
-        text: '正在加载'
-      })
-      this.getRequest.showLoading({
-        text: '正在加载'
-      })
-      this.putRequest.showLoading({
-        text: '正在加载'
-      })
-      this.internetRX.showLoading({
-        text: '正在加载'
-      })
-      this.internetTX.showLoading({
-        text: '正在加载'
-      })
-      this.userRequest.showLoading({
-        text: '正在加载'
-      })
-      this.userTraffic.showLoading({
-        text: '正在加载'
-      })
-      this.bucketRequest.showLoading({
-        text: '正在加载'
-      })
-      this.bucketTraffic.showLoading({
-        text: '正在加载'
-      })
-    },
-    mapDataPoints (resData, dataNames) {
-      let dataPoints = []
-      for (let i = 0; i < dataNames.length; i++) {
-        dataPoints.push(resData.map(function (item) {
-          return item[dataNames[i]]
-        }))
-      }
-      return dataPoints
-    },
-    mapXTimes (resData) {
-      return resData.map(function (item) {
-        return moment(item['timestamp']).format('MM/DD HH:mm')
-      })
+      let loading = myChart.loading
+      this.storageUtil.showLoading(loading)
+      this.getRequest.showLoading(loading)
+      this.putRequest.showLoading(loading)
+      this.internetRX.showLoading(loading)
+      this.internetTX.showLoading(loading)
+      this.userRequest.showLoading(loading)
+      this.userTraffic.showLoading(loading)
+      this.bucketRequest.showLoading(loading)
+      this.bucketTraffic.showLoading(loading)
     },
     refreshData (bucketName) {
       this.showLoading()
@@ -235,33 +119,33 @@ export default {
       let interval = moment.duration(5, 'minutes').as('minutes')
       ossMetric.getStorageUtil(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = ['meteringStorageUtilization']
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.storageUtil, this.getChartOption('存储用量(B)', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLiness(this.storageUtil, myChart.getChartOption('存储用量(B)', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getGetRequest(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = ['meteringGetRequest']
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.getRequest, this.getChartOption('Get请求数', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.getRequest, myChart.getChartOption('Get请求数', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getPutRequest(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = ['meteringPutRequest']
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.putRequest, this.getChartOption('Put请求数', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.putRequest, myChart.getChartOption('Put请求数', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getInternetTX(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = ['meteringInternetTX']
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.internetTX, this.getChartOption('公网流出流量(B)', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.internetTX, myChart.getChartOption('公网流出流量(B)', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getInternetRX(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = ['meteringInternetRX']
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.internetRX, this.getChartOption('公网流入流量(B)', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.internetRX, myChart.getChartOption('公网流入流量(B)', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getUserRequest(startTime, endTime, interval).then(res => {
         let dataNames = [
@@ -270,9 +154,9 @@ export default {
           'userAuthorizationErrorRate', 'userResourceNotFoundErrorRate',
           'userClientTimeoutErrorRate', 'userClientOtherErrorRate'
         ]
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.userRequest, this.getChartOption('用户层级请求详情', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.userRequest, myChart.getChartOption('用户层级请求详情', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getUserTraffic(startTime, endTime, interval).then(res => {
         let dataNames = [
@@ -281,9 +165,9 @@ export default {
           'userCdnSend', 'userCdnRecv',
           'userSyncSend', 'userSyncRecv'
         ]
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.userTraffic, this.getChartOption('用户层级流量详情', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.userTraffic, myChart.getChartOption('用户层级流量详情', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getBucketRequest(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = [
@@ -292,9 +176,9 @@ export default {
           'authorizationErrorRate', 'resourceNotFoundErrorRate',
           'clientTimeoutErrorRate', 'clientOtherErrorRate'
         ]
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.bucketRequest, this.getChartOption('bucket层级请求详情', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.bucketRequest, myChart.getChartOption('bucket层级请求详情', dataNames, lines, myChart.mapXTimes(res.data)))
       })
       ossMetric.getBucketTraffic(startTime, endTime, interval, bucketName).then(res => {
         let dataNames = [
@@ -303,114 +187,16 @@ export default {
           'cdnSend', 'cdnRecv',
           'syncSend', 'syncRecv'
         ]
-        let dataPoints = this.mapDataPoints(res.data, dataNames)
-        let lines = this.getLines(dataNames, dataPoints)
-        this.drawLine(this.bucketTraffic, this.getChartOption('bucket层级流量详情', dataNames, lines, this.mapXTimes(res.data)))
+        let dataPoints = myChart.mapDataPoints(res.data, dataNames)
+        let lines = myChart.getLines(dataNames, dataPoints)
+        myChart.drawLines(this.bucketTraffic, myChart.getChartOption('bucket层级流量详情', dataNames, lines, myChart.mapXTimes(res.data)))
       })
-    },
-    getLines (names, dataPoints) {
-      let series = []
-      for (let i = 0; i < names.length; i++) {
-        series.push({
-          name: names[i],
-          type: 'line',
-          data: dataPoints[i]
-        })
-      }
-      return series
-    },
-    getChartOption (chartName, dataNames, series, xTime) {
-      return {
-        backgroundColor: '#21202D',
-        legend: {
-          data: dataNames,
-          inactiveColor: '#777',
-          textStyle: {
-            color: '#fff'
-          }
-        },
-        title: {
-          text: chartName,
-          textStyle: {
-            color: '#fff',
-            fontSize: 12
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            animation: false,
-            type: 'cross',
-            lineStyle: {
-              color: '#376df4',
-              width: 2,
-              opacity: 1
-            }
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: xTime,
-          axisLine: {lineStyle: {color: '#8392A5'}}
-        },
-        yAxis: {
-          scale: true,
-          axisLine: {lineStyle: {color: '#8392A5'}},
-          splitLine: {show: true}
-        },
-        grid: {
-          bottom: 80
-        },
-        dataZoom: [{
-          textStyle: {
-            color: '#8392A5'
-          },
-          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-          handleSize: '80%',
-          dataBackground: {
-            areaStyle: {
-              color: '#8392A5'
-            },
-            lineStyle: {
-              opacity: 0.8,
-              color: '#8392A5'
-            }
-          },
-          handleStyle: {
-            color: '#fff',
-            shadowBlur: 3,
-            shadowColor: 'rgba(0, 0, 0, 0.6)',
-            shadowOffsetX: 2,
-            shadowOffsetY: 2
-          }
-        }, {
-          type: 'inside'
-        }],
-        series: series
-      }
-    },
-    drawLine (chart, option) {
-      chart.setOption(option)
-      chart.hideLoading()
     }
   }
 }
 </script>
 
 <style scoped>
-  .titleTab {
-    padding: 10px 0 10px 10px;
-    background-color: #efefef;
-    width: 800px;
-  }
-  .chartGroup {
-    /*width: 100%;*/
-    display: flex;
-    flex-direction: column;
-    margin: 20px 0;
-    background-color: #545c64;
-    border-width: 0;
-  }
   .group1,.group2,.group3 {
     display: flex;
     flex-direction: row;
