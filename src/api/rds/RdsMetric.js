@@ -1,48 +1,54 @@
 import http from '../base/http-request'
 
 export default {
-  getCpuUsage (instanceId, startTime, endTime, interval) {
-    return http.post('/rds/metric/cpuUsage', {
+  getCpuUsage (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/rds/metric/cpuUsage', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       instanceId: instanceId
     })
   },
-  getMemoryUsage (instanceId, startTime, endTime, interval) {
-    return http.post('/rds/metric/memoryUsage', {
+  getMemoryUsage (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/rds/metric/memoryUsage', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       instanceId: instanceId
     })
   },
-  getDiskUsage (instanceId, startTime, endTime, interval) {
-    return http.post('/rds/metric/diskUsage', {
+  getDiskUsage (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/rds/metric/diskUsage', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       instanceId: instanceId
     })
   },
-  getIopsUsage (instanceId, startTime, endTime, interval) {
-    return http.post('/rds/metric/iopsUsage', {
+  getIopsUsage (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/rds/metric/iopsUsage', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       instanceId: instanceId
     })
   },
-  getConnectionUsage (instanceId, startTime, endTime, interval) {
-    return http.post('/rds/metric/connectionUsage', {
+  getConnectionUsage (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/rds/metric/connectionUsage', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       instanceId: instanceId
     })
   },
-  getDataDelay (instanceId, startTime, endTime, interval) {
-    return http.post('/rds/metric/dataDelay', {
+  getDataDelay (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/rds/metric/dataDelay', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,

@@ -18,6 +18,22 @@ export default {
     height: 100%;
     /*overflow: scroll;*/
   }
+  .el-page-header__content {
+    color: #3a8ee6;
+  }
+  .el-page-header__title {
+    font-size: large;
+    color: #3a8ee6;
+  }
+  .el-icon-back {
+    color: #3a8ee6;
+  }
+  .el-icon-back:before {
+    font-size: larger;
+  }
+  .el-page-header__left::after {
+    background-color: #3a8ee6;
+  }
   .el-card__header {
     background-color: #09121b;/*#3c3f41;*/
     border-width: 0;
@@ -88,12 +104,61 @@ export default {
   .el-tabs__nav.is-top {
     border-color: #3a8ee6;
   }
-/*#app {*/
-/*  font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-/*  -webkit-font-smoothing: antialiased;*/
-/*  -moz-osx-font-smoothing: grayscale;*/
-/*  text-align: center;*/
-/*  color: #2c3e50;*/
-/*  margin-top: 60px;*/
-/*}*/
+  .search .elInput {
+    width: 50%;
+    height: 40px;
+    margin: 0 20px 20px 0;
+  }
+  .el-button {
+    height: 40px;
+    background: #0a0c13;
+    border: 1px solid #122f5c;
+  }
+  .el-button:hover {
+    height: 40px;
+    background: #1a2032;
+    border: 1px solid #122f5c;
+  }
+  .el-button:focus {
+    background: #1a2032;
+    border: 1px solid #122f5c;
+  }
+  .el-input > input {
+    background-color: rgb(18, 47, 92);
+    border-style: none;
+  }
+  .el-table {
+    border-style: solid;
+    border-color: rgb(18, 47, 92);
+    border-width: 1px;
+  }
+  /*表头样式*/
+  .el-table .el-table__header-wrapper tr th{
+    background-color: rgb(18, 47, 92)!important;
+    color: rgb(255, 255, 255);
+  }
+  /*每行样式*/
+  .el-table .el-table__row{
+    background-color: rgb(18, 47, 92);
+    color: rgb(255, 255, 255);
+  }
+  /*hover每行的样式*/
+  .el-table .el-table__body tr.current-row > td {
+    background-color: #0D1F34 !important;
+  }
+  .el-table .el-table__body tr:hover > td {
+    background-color: #0D1F34 !important;
+  }
+  /*每行边框的样式*/
+  .el-table td,
+  .el-table th.is-leaf{
+    border-bottom: 1px solid #3a8ee6;
+    border-right:1px solid #3a8ee6;
+  }
+  .el-table::before {
+    background-color: #0a0c13;
+  }
+  .el-table__empty-block {
+    background-color: #0D1F34;
+  }
 </style>

@@ -1,15 +1,11 @@
 <template>
   <div id="ecsMonitor">
-<!--    <el-form-item label="选择实例"/>-->
-<!--    <el-select v-model="instanceId" placeholder="请选择"-->
-<!--               @change="refreshData(instanceId)"-->
-<!--    style="margin-bottom: 20px;">-->
-<!--      <el-option-->
-<!--        v-for="item in instances"-->
-<!--        :key="item.instanceId"-->
-<!--        :value="item.instanceId">-->
-<!--      </el-option>-->
-<!--    </el-select>-->
+    <el-page-header @back="goBack" :content="'实例: ' + instanceId">
+    </el-page-header>
+<!--    <el-row>-->
+<!--&lt;!&ndash;      <el-col :span="12"><el-button class="searchBtn">返回实例列表</el-button></el-col>&ndash;&gt;-->
+<!--&lt;!&ndash;      <el-col :span="12"> <span class="bucket-name"></span></el-col>&ndash;&gt;-->
+<!--    </el-row>-->
     <el-card class="box-card chartGroup">
       <div slot="header" class="clearfix">
         <span>CPU</span>
@@ -76,8 +72,8 @@
 </template>
 
 <script>
-import ecsMetric from '../../api/ecs/EcsMetric'
-import myChart from '../../common/echarts/myChart'
+import ecsMetric from '../../../api/ecs/EcsMetric'
+import myChart from '../../../common/echarts/myChart'
 import moment from 'moment'
 
 export default {
@@ -85,13 +81,15 @@ export default {
   mounted () {
     this.initCharts()
     this.showLoading()
-    this.refreshData(this.instanceId)
+    this.refreshData(this.userId, this.instanceId)
   },
   created () {
-    this.instanceId = this.$route.query.instanceId
+    this.userId = this.$route.params.userId
+    this.instanceId = this.$route.params.instanceId
   },
   data () {
     return {
+      userId: '',
       instanceId: '',
       cpu: {},
       loadM: {},
@@ -105,11 +103,14 @@ export default {
     }
   },
   methods: {
-    getCpu (instanceId, startTime, endTime, interval) {
+    goBack () {
+      this.$router.back()
+    },
+    getCpu (userId, instanceId, startTime, endTime, interval) {
       Promise.all([
-        ecsMetric.getCpuTotal(instanceId, startTime, endTime, interval),
-        ecsMetric.getCpuSystem(instanceId, startTime, endTime, interval),
-        ecsMetric.getCpuUser(instanceId, startTime, endTime, interval)]).then(value => {
+        ecsMetric.getCpuTotal(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getCpuSystem(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getCpuUser(userId, instanceId, startTime, endTime, interval)]).then(value => {
         let cpuTotal = value[0].map(function (item) {
           return item.average
         })
@@ -125,11 +126,11 @@ export default {
         myChart.drawLines(this.cpu, myChart.getChartOption('CPU使用率', dataNames, lines, time))
       })
     },
-    getLoad (instanceId, startTime, endTime, interval) {
+    getLoad (userId, instanceId, startTime, endTime, interval) {
       Promise.all([
-        ecsMetric.getLoad1m(instanceId, startTime, endTime, interval),
-        ecsMetric.getLoad5m(instanceId, startTime, endTime, interval),
-        ecsMetric.getLoad15m(instanceId, startTime, endTime, interval)]).then(value => {
+        ecsMetric.getLoad1m(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getLoad5m(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getLoad15m(userId, instanceId, startTime, endTime, interval)]).then(value => {
         let load1m = value[0].map(function (item) {
           return item.average
         })
@@ -145,10 +146,10 @@ export default {
         myChart.drawLines(this.loadM, myChart.getChartOption('系统平均负载', dataNames, lines, time))
       })
     },
-    getDiskRate (instanceId, startTime, endTime, interval) {
+    getDiskRate (userId, instanceId, startTime, endTime, interval) {
       Promise.all([
-        ecsMetric.getDiskReadRate(instanceId, startTime, endTime, interval),
-        ecsMetric.getDiskWriteRate(instanceId, startTime, endTime, interval)]).then(value => {
+        ecsMetric.getDiskReadRate(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getDiskWriteRate(userId, instanceId, startTime, endTime, interval)]).then(value => {
         let read = value[0].map(function (item) {
           return item.average
         })
@@ -161,10 +162,10 @@ export default {
         myChart.drawLines(this.diskRate, myChart.getChartOption('磁盘读写速率(Bps)', dataNames, lines, time))
       })
     },
-    getDiskIops (instanceId, startTime, endTime, interval) {
+    getDiskIops (userId, instanceId, startTime, endTime, interval) {
       Promise.all([
-        ecsMetric.getDiskReadIOPS(instanceId, startTime, endTime, interval),
-        ecsMetric.getDiskWriteIOPS(instanceId, startTime, endTime, interval)]).then(value => {
+        ecsMetric.getDiskReadIOPS(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getDiskWriteIOPS(userId, instanceId, startTime, endTime, interval)]).then(value => {
         let read = value[0].map(function (item) {
           return item.average
         })
@@ -177,10 +178,10 @@ export default {
         myChart.drawLines(this.diskIops, myChart.getChartOption('磁盘读写请求数', dataNames, lines, time))
       })
     },
-    getNetBPS (instanceId, startTime, endTime, interval) {
+    getNetBPS (userId, instanceId, startTime, endTime, interval) {
       Promise.all([
-        ecsMetric.getNetInBPS(instanceId, startTime, endTime, interval),
-        ecsMetric.getNetOutBPS(instanceId, startTime, endTime, interval)]).then(value => {
+        ecsMetric.getNetInBPS(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getNetOutBPS(userId, instanceId, startTime, endTime, interval)]).then(value => {
         let inB = value[0].map(function (item) {
           return item.average
         })
@@ -193,10 +194,10 @@ export default {
         myChart.drawLines(this.netbps, myChart.getChartOption('网络流入流出速率(bps)', dataNames, lines, time))
       })
     },
-    getNetPPS (instanceId, startTime, endTime, interval) {
+    getNetPPS (userId, instanceId, startTime, endTime, interval) {
       Promise.all([
-        ecsMetric.getNetInPPS(instanceId, startTime, endTime, interval),
-        ecsMetric.getNetOutPPS(instanceId, startTime, endTime, interval)]).then(value => {
+        ecsMetric.getNetInPPS(userId, instanceId, startTime, endTime, interval),
+        ecsMetric.getNetOutPPS(userId, instanceId, startTime, endTime, interval)]).then(value => {
         let inP = value[0].map(function (item) {
           return item.average
         })
@@ -232,30 +233,30 @@ export default {
       this.netPps.showLoading(loading)
       this.tcpConnection.showLoading(loading)
     },
-    refreshData (instanceId) {
+    refreshData (userId, instanceId) {
       this.showLoading()
       let endTime = new Date().valueOf()
       let startTime = moment(endTime).add(-50, 'd').valueOf()
       let interval = moment.duration(60, 'minutes').as('minutes')
-      this.getCpu(instanceId, startTime, endTime, interval)
-      this.getLoad(instanceId, startTime, endTime, interval)
-      this.getDiskRate(instanceId, startTime, endTime, interval)
-      this.getDiskIops(instanceId, startTime, endTime, interval)
-      this.getNetBPS(instanceId, startTime, endTime, interval)
-      this.getNetPPS(instanceId, startTime, endTime, interval)
-      ecsMetric.getMemory(instanceId, startTime, endTime, interval).then(res => {
+      this.getCpu(userId, instanceId, startTime, endTime, interval)
+      this.getLoad(userId, instanceId, startTime, endTime, interval)
+      this.getDiskRate(userId, instanceId, startTime, endTime, interval)
+      this.getDiskIops(userId, instanceId, startTime, endTime, interval)
+      this.getNetBPS(userId, instanceId, startTime, endTime, interval)
+      this.getNetPPS(userId, instanceId, startTime, endTime, interval)
+      ecsMetric.getMemory(userId, instanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['maximum', 'minimum', 'average']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
         myChart.drawLines(this.memory, myChart.getChartOption('内存使用率', dataNames, lines, myChart.mapXTimes(res.data)))
       })
-      ecsMetric.getDiskInode(instanceId, startTime, endTime, interval).then(res => {
+      ecsMetric.getDiskInode(userId, instanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['maximum', 'minimum', 'average']
         let dataPoints = myChart.mapDataPoints(res, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
         myChart.drawLines(this.diskInode, myChart.getChartOption('磁盘inode使用率', dataNames, lines, myChart.mapXTimes(res)))
       })
-      ecsMetric.getTcpConnection(instanceId, startTime, endTime, interval).then(res => {
+      ecsMetric.getTcpConnection(userId, instanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['TCP_TOTAL', 'ESTABLISHED', 'NON_ESTABLISHED']
         let total = res.data.filter(function (item) {
           return item.state === 'TCP_TOTAL'

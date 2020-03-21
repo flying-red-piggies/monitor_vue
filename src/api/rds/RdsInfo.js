@@ -1,8 +1,7 @@
 import http from '../base/http-request'
 
 export default {
-  getInstances () {
-    return http.get('/rds/info/listInstances', {
-    })
+  getInstances (userId) {
+    return http.pathGet('/rds/info/listInstances', userId)
   }
 }

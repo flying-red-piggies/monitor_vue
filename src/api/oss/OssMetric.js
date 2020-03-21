@@ -1,70 +1,79 @@
 import http from '../base/http-request'
 
 export default {
-  getStorageUtil (startTime, endTime, interval, bucketName) {
-    return http.post('/oss/metric/storageUtil', {
+  getStorageUtil (userId, startTime, endTime, interval, bucketName) {
+    return http.bodyPost('/oss/metric/storageUtil', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       bucketName: bucketName
     })
   },
-  getGetRequest (startTime, endTime, interval, bucketName) {
-    return http.post('/oss/metric/getRequest', {
+  getGetRequest (userId, startTime, endTime, interval, bucketName) {
+    return http.bodyPost('/oss/metric/getRequest', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       bucketName: bucketName
     })
   },
-  getPutRequest (startTime, endTime, interval, bucketName) {
-    return http.post('/oss/metric/putRequest', {
+  getPutRequest (userId, startTime, endTime, interval, bucketName) {
+    return http.bodyPost('/oss/metric/putRequest', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       bucketName: bucketName
     })
   },
-  getInternetTX (startTime, endTime, interval, bucketName) {
-    return http.post('/oss/metric/internetTX', {
+  getInternetTX (userId, startTime, endTime, interval, bucketName) {
+    return http.bodyPost('/oss/metric/internetTX', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       bucketName: bucketName
     })
   },
-  getInternetRX (startTime, endTime, interval, bucketName) {
-    return http.post('/oss/metric/internetRX', {
+  getInternetRX (userId, startTime, endTime, interval, bucketName) {
+    return http.bodyPost('/oss/metric/internetRX', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       bucketName: bucketName
     })
   },
-  getUserRequest (startTime, endTime, interval) {
-    return http.post('/oss/metric/userRequest', {
+  getUserRequest (userId, startTime, endTime, interval) {
+    return http.bodyPost('/oss/metric/userRequest', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval
     })
   },
-  getUserTraffic (startTime, endTime, interval) {
-    return http.post('/oss/metric/userTraffic', {
+  getUserTraffic (userId, startTime, endTime, interval) {
+    return http.bodyPost('/oss/metric/userTraffic', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval
     })
   },
-  getBucketRequest (startTime, endTime, interval, bucketName) {
-    return http.post('/oss/metric/bucketRequest', {
+  getBucketRequest (userId, startTime, endTime, interval, bucketName) {
+    return http.bodyPost('/oss/metric/bucketRequest', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,
       bucketName: bucketName
     })
   },
-  getBucketTraffic (startTime, endTime, interval, bucketName) {
-    return http.post('/oss/metric/bucketTraffic', {
+  getBucketTraffic (userId, startTime, endTime, interval, bucketName) {
+    return http.bodyPost('/oss/metric/bucketTraffic', {
+      userId: userId,
       startTime: startTime,
       endTime: endTime,
       interval: interval,

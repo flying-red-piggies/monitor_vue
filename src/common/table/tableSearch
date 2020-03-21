@@ -1,0 +1,19 @@
+export default {
+  filter (tableData, key) {
+    let input = key.toLowerCase()
+    let items = tableData
+    let result = []
+    if (input) {
+      result = items.filter(function (item) {
+        return Object.keys(item).some(function (key1) {
+          return String(item[key1])
+            .toLowerCase()
+            .match(input)
+        })
+      })
+    } else {
+      result = items
+    }
+    return result
+  }
+}

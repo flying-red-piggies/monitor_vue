@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-tabs v-model="activeTab" @click="tabChange('instance')">
-      <el-tab-pane label="实例列表" name="instance">
+    <el-tabs v-model="activeTab">
+      <el-tab-pane label="实例列表" name="instance" @click="tabChange('instance')">
         <div class="search">
-          <el-input class="elInput" placeholder="输入实例id或名称进行搜索"/>
-          <el-button class="searchBtn">搜索</el-button>
+          <el-input class="elInput" v-model="instanceId" placeholder="输入实例id或名称进行搜索"/>
+<!--          <el-button class="searchBtn">搜索</el-button>-->
         </div>
         <div>
           <el-table
             ref="multipleTable"
-            :data="instanceList"
+            :data="search(instanceList, instanceId)"
             tooltip-effect="dark"
             style="width: 100%">
             <!--          @selection-change="handleSelectionChange">-->
@@ -55,33 +55,60 @@
           </el-table>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="报警规则" name="warn" @click="tabChange('instance')">报警规则</el-tab-pane>
+      <el-tab-pane label="报警规则" name="warn" @click="tabChange('instance')">
+        <rule-table v-if="isReady" :rule-list="ruleList"/>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 import rdsInfo from '../../../api/rds/RdsInfo'
+import rule from '../../../api/alarm/rule'
+import tableSearch from '../../../common/table/tableSearch'
+
+import ruleTable from '../../../common/table/ruleTable'
+
 export default {
   name: 'rdsMain',
+  components: {
+    ruleTable
+  },
   created () {
-    rdsInfo.getInstances().then(res => {
+    rdsInfo.getInstances(this.userId).then(res => {
       this.instanceList = res.data
       console.log(res.data)
+    })
+    rule.getRdsRuleList(this.userId).then(res => {
+      this.ruleList = res.data
+      this.isReady = true
     })
   },
   data () {
     return {
+      userId: '1072760173225591',
+      instanceId: '',
       activeTab: 'instance',
-      instanceList: []
+      instanceList: [],
+      ruleList: [],
+      isReady: false
     }
   },
   methods: {
+    search (tableData, key) {
+      return tableSearch.filter(tableData, key)
+    },
     tabChange (activeName) {
       this.activeTab = activeName
     },
     showChart: function (scopedRow) {
-      this.$router.push({name: 'rdsMonitor', params: {dBInstanceId: scopedRow.dBInstanceId}})
+      this.$router.push({
+        name: 'rdsMonitor',
+        params: {
+          userId: this.userId,
+          dBInstanceId: scopedRow.dBInstanceId
+        }
+      })
     }
   }
 }

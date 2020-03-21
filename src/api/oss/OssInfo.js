@@ -1,8 +1,7 @@
 import http from '../base/http-request'
 
 export default {
-  getBuckets () {
-    return http.get('/oss/info/listBuckets', {
-    })
+  getBuckets (userId) {
+    return http.pathGet('/oss/info/listBuckets', userId)
   }
 }

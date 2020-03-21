@@ -1,9 +1,10 @@
 import http from '../base/http-request'
 
 export default {
-  getCpuTotal (instanceId, startTime, endTime, interval) {
+  getCpuTotal (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/cpuTotal', {
+      http.bodyPost('/ecs/metric/cpuTotal', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -11,9 +12,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getCpuSystem (instanceId, startTime, endTime, interval) {
+  getCpuSystem (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/cpuSystem', {
+      http.bodyPost('/ecs/metric/cpuSystem', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -21,9 +23,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getCpuUser (instanceId, startTime, endTime, interval) {
+  getCpuUser (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/cpuUser', {
+      http.bodyPost('/ecs/metric/cpuUser', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -31,9 +34,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getLoad1m (instanceId, startTime, endTime, interval) {
+  getLoad1m (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/load1m', {
+      http.bodyPost('/ecs/metric/load1m', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -41,9 +45,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getLoad5m (instanceId, startTime, endTime, interval) {
+  getLoad5m (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/load5m', {
+      http.bodyPost('/ecs/metric/load5m', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -51,9 +56,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getLoad15m (instanceId, startTime, endTime, interval) {
+  getLoad15m (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/load15m', {
+      http.bodyPost('/ecs/metric/load15m', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -61,17 +67,19 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getMemory (instanceId, startTime, endTime, interval) {
-    return http.post('/ecs/metric/memoryUtil', {
+  getMemory (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/ecs/metric/memoryUtil', {
+      userId: userId,
       instanceId: instanceId,
       startTime: startTime,
       endTime: endTime,
       interval: interval
     })
   },
-  getDiskInode (instanceId, startTime, endTime, interval) {
+  getDiskInode (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/diskInode', {
+      http.bodyPost('/ecs/metric/diskInode', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -79,9 +87,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getDiskReadRate (instanceId, startTime, endTime, interval) {
+  getDiskReadRate (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/diskReadRate', {
+      http.bodyPost('/ecs/metric/diskReadRate', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -89,9 +98,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getDiskWriteRate (instanceId, startTime, endTime, interval) {
+  getDiskWriteRate (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/diskWriteRate', {
+      http.bodyPost('/ecs/metric/diskWriteRate', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -99,9 +109,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getDiskReadIOPS (instanceId, startTime, endTime, interval) {
+  getDiskReadIOPS (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/diskReadIops', {
+      http.bodyPost('/ecs/metric/diskReadIops', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -109,9 +120,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getDiskWriteIOPS (instanceId, startTime, endTime, interval) {
+  getDiskWriteIOPS (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/diskWriteIops', {
+      http.bodyPost('/ecs/metric/diskWriteIops', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -119,9 +131,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getNetInBPS (instanceId, startTime, endTime, interval) {
+  getNetInBPS (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/netInBps', {
+      http.bodyPost('/ecs/metric/netInBps', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -129,9 +142,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getNetOutBPS (instanceId, startTime, endTime, interval) {
+  getNetOutBPS (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/netOutBps', {
+      http.bodyPost('/ecs/metric/netOutBps', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -139,9 +153,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getNetInPPS (instanceId, startTime, endTime, interval) {
+  getNetInPPS (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/netInPps', {
+      http.bodyPost('/ecs/metric/netInPps', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -149,9 +164,10 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getNetOutPPS (instanceId, startTime, endTime, interval) {
+  getNetOutPPS (userId, instanceId, startTime, endTime, interval) {
     return new Promise((resolve, reject) => {
-      http.post('/ecs/metric/netOutPps', {
+      http.bodyPost('/ecs/metric/netOutPps', {
+        userId: userId,
         instanceId: instanceId,
         startTime: startTime,
         endTime: endTime,
@@ -159,8 +175,9 @@ export default {
       }).then((res) => resolve(res.data))
     })
   },
-  getTcpConnection (instanceId, startTime, endTime, interval) {
-    return http.post('/ecs/metric/netTcpConnection', {
+  getTcpConnection (userId, instanceId, startTime, endTime, interval) {
+    return http.bodyPost('/ecs/metric/netTcpConnection', {
+      userId: userId,
       instanceId: instanceId,
       startTime: startTime,
       endTime: endTime,

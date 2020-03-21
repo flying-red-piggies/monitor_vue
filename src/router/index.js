@@ -7,9 +7,14 @@ import ecsMain from '../components/statistic/ecs/EcsMain'
 import ossMain from '../components/statistic/oss/OssMain'
 import rdsMain from '../components/statistic/rds/RdsMain'
 
-import ecsMonitor from '../components/statistic/EcsMonitor'
-import ossMonitor from '../components/statistic/OssMonitor'
-import rdsMonitor from '../components/statistic/RdsMonitor'
+import ecsMonitor from '../components/statistic/ecs/EcsMonitor'
+import ossMonitor from '../components/statistic/oss/OssMonitor'
+import rdsMonitor from '../components/statistic/rds/RdsMonitor'
+
+import ruleMain from '../components/alarm/rule/RuleMain'
+import contactMain from '../components/alarm/contact/ContactMain'
+import groupMain from '../components/alarm/group/GroupMain'
+
 Vue.use(Router)
 
 export default new Router({
@@ -54,6 +59,21 @@ export default new Router({
           path: 'rdsMonitor',
           name: 'rdsMonitor',
           component: rdsMonitor
+        },
+        {
+          path: 'ruleMain',
+          name: 'ruleMain',
+          component: ruleMain
+        },
+        {
+          path: 'contactMain',
+          name: 'contactMain',
+          component: contactMain
+        },
+        {
+          path: 'groupMain',
+          name: 'groupMain',
+          component: groupMain
         }
       ]
     }

@@ -1,13 +1,7 @@
 <template>
   <div id="rdsMonitor">
-<!--    <el-select v-model="dBInstanceId" placeholder="请选择"-->
-<!--               @change="refreshData(dBInstanceId)">-->
-<!--      <el-option-->
-<!--        v-for="item in dbInstances"-->
-<!--        :key="item.dBInstanceId"-->
-<!--        :value="item.dBInstanceId">-->
-<!--      </el-option>-->
-<!--    </el-select>-->
+    <el-page-header @back="goBack" :content="'实例: ' + dBInstanceId">
+    </el-page-header>
     <el-card class="box-card chartGroup">
       <div slot="header" class="clearfix">
         <span>CPU/内存</span>
@@ -50,8 +44,8 @@
 </template>
 
 <script>
-import rdsMetric from '../../api/rds/RdsMetric'
-import myChart from '../../common/echarts/myChart'
+import rdsMetric from '../../../api/rds/RdsMetric'
+import myChart from '../../../common/echarts/myChart'
 import moment from 'moment'
 
 export default {
@@ -59,13 +53,15 @@ export default {
   mounted () {
     this.initCharts()
     this.showLoading()
-    this.refreshData(this.dBInstanceId)
+    this.refreshData(this.userId, this.dBInstanceId)
   },
   created () {
-    this.dBInstanceId = this.$route.query.dBInstanceId
+    this.userId = this.$route.params.userId
+    this.dBInstanceId = this.$route.params.dBInstanceId
   },
   data () {
     return {
+      userId: '',
       dbInstances: [],
       dBInstanceId: '',
       cpuUsage: {},
@@ -77,6 +73,9 @@ export default {
     }
   },
   methods: {
+    goBack () {
+      this.$router.back()
+    },
     initCharts () {
       this.cpuUsage = this.$echarts.init(document.getElementById('cpuUsageChart'))
       this.memoryUsage = this.$echarts.init(document.getElementById('memoryUsageChart'))
@@ -94,42 +93,42 @@ export default {
       this.connectionUsage.showLoading(loading)
       this.dataDelay.showLoading(loading)
     },
-    refreshData (dBInstanceId) {
+    refreshData (userId, dBInstanceId) {
       this.showLoading()
       let endTime = new Date().valueOf()
       let startTime = moment(endTime).add(-50, 'd').valueOf()
       let interval = moment.duration(5, 'minutes').as('minutes')
-      rdsMetric.getCpuUsage(dBInstanceId, startTime, endTime, interval).then(res => {
+      rdsMetric.getCpuUsage(userId, dBInstanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['average', 'maximum', 'minimum']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
         myChart.drawLines(this.cpuUsage, myChart.getChartOption('CPU使用率', dataNames, lines, myChart.mapXTimes(res.data)))
       })
-      rdsMetric.getMemoryUsage(dBInstanceId, startTime, endTime, interval).then(res => {
+      rdsMetric.getMemoryUsage(userId, dBInstanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['average', 'maximum', 'minimum']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
         myChart.drawLines(this.memoryUsage, myChart.getChartOption('内存使用率', dataNames, lines, myChart.mapXTimes(res.data)))
       })
-      rdsMetric.getDiskUsage(dBInstanceId, startTime, endTime, interval).then(res => {
+      rdsMetric.getDiskUsage(userId, dBInstanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['average', 'maximum', 'minimum']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
         myChart.drawLines(this.diskUsage, myChart.getChartOption('磁盘使用率', dataNames, lines, myChart.mapXTimes(res.data)))
       })
-      rdsMetric.getIopsUsage(dBInstanceId, startTime, endTime, interval).then(res => {
+      rdsMetric.getIopsUsage(userId, dBInstanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['average', 'maximum', 'minimum']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
         myChart.drawLines(this.iopsUsage, myChart.getChartOption('IOPS使用率', dataNames, lines, myChart.mapXTimes(res.data)))
       })
-      rdsMetric.getConnectionUsage(dBInstanceId, startTime, endTime, interval).then(res => {
+      rdsMetric.getConnectionUsage(userId, dBInstanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['average', 'maximum', 'minimum']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
         myChart.drawLines(this.connectionUsage, myChart.getChartOption('连接数使用率', dataNames, lines, myChart.mapXTimes(res.data)))
       })
-      rdsMetric.getDataDelay(dBInstanceId, startTime, endTime, interval).then(res => {
+      rdsMetric.getDataDelay(userId, dBInstanceId, startTime, endTime, interval).then(res => {
         let dataNames = ['average', 'maximum', 'minimum']
         let dataPoints = myChart.mapDataPoints(res.data, dataNames)
         let lines = myChart.getLines(dataNames, dataPoints)
