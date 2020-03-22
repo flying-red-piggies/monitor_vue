@@ -7,7 +7,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      instanceId: instanceId
+      dimension: {
+        instanceId: instanceId
+      }
     })
   },
   getMemoryUsage (userId, instanceId, startTime, endTime, interval) {
@@ -16,7 +18,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      instanceId: instanceId
+      dimension: {
+        instanceId: instanceId
+      }
     })
   },
   getDiskUsage (userId, instanceId, startTime, endTime, interval) {
@@ -25,7 +29,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      instanceId: instanceId
+      dimension: {
+        instanceId: instanceId
+      }
     })
   },
   getIopsUsage (userId, instanceId, startTime, endTime, interval) {
@@ -34,7 +40,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      instanceId: instanceId
+      dimension: {
+        instanceId: instanceId
+      }
     })
   },
   getConnectionUsage (userId, instanceId, startTime, endTime, interval) {
@@ -43,7 +51,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      instanceId: instanceId
+      dimension: {
+        instanceId: instanceId
+      }
     })
   },
   getDataDelay (userId, instanceId, startTime, endTime, interval) {
@@ -52,7 +62,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      instanceId: instanceId
+      dimension: {
+        instanceId: instanceId
+      }
     })
   }
 }

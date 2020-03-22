@@ -7,7 +7,11 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      bucketName: bucketName
+      dimension: {
+        dimension: {
+          bucketName: bucketName
+        }
+      }
     })
   },
   getGetRequest (userId, startTime, endTime, interval, bucketName) {
@@ -16,7 +20,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      bucketName: bucketName
+      dimension: {
+        bucketName: bucketName
+      }
     })
   },
   getPutRequest (userId, startTime, endTime, interval, bucketName) {
@@ -25,7 +31,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      bucketName: bucketName
+      dimension: {
+        bucketName: bucketName
+      }
     })
   },
   getInternetTX (userId, startTime, endTime, interval, bucketName) {
@@ -34,7 +42,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      bucketName: bucketName
+      dimension: {
+        bucketName: bucketName
+      }
     })
   },
   getInternetRX (userId, startTime, endTime, interval, bucketName) {
@@ -43,7 +53,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      bucketName: bucketName
+      dimension: {
+        bucketName: bucketName
+      }
     })
   },
   getUserRequest (userId, startTime, endTime, interval) {
@@ -68,7 +80,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      bucketName: bucketName
+      dimension: {
+        bucketName: bucketName
+      }
     })
   },
   getBucketTraffic (userId, startTime, endTime, interval, bucketName) {
@@ -77,7 +91,9 @@ export default {
       startTime: startTime,
       endTime: endTime,
       interval: interval,
-      bucketName: bucketName
+      dimension: {
+        bucketName: bucketName
+      }
     })
   }
 }
