@@ -7,6 +7,10 @@
         </div>
         <div>
           <el-table
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             ref="multipleTable"
             :data="search(groupList, name)"
             tooltip-effect="dark"
@@ -42,8 +46,10 @@ import tableSearch from '../../../common/table/tableSearch'
 export default {
   name: 'groupMain',
   created () {
+    this.loading = true
     group.getGroupList(this.userId).then(res => {
       this.groupList = res.data
+      this.loading = false
     })
   },
   data () {
@@ -51,7 +57,8 @@ export default {
       userId: '1072760173225591',
       name: '',
       activeTab: 'group',
-      groupList: []
+      groupList: [],
+      loading: false
     }
   },
   methods: {

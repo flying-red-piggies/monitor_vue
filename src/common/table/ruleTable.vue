@@ -2,9 +2,15 @@
   <div>
     <div class="search">
       <el-input class="elInput" v-model="ruleName" placeholder="输入规则名称进行搜索"/>
+      <el-button @click="addRule">添加规则</el-button>
+      <el-button @click="refreshRules" class="refresh-button">刷新</el-button>
     </div>
     <div>
       <el-table
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)"
         ref="multipleTable"
         :data="search(ruleList, ruleName)"
         tooltip-effect="dark"
@@ -57,16 +63,38 @@ import tableSearch from './tableSearch'
 export default {
   name: 'ruleTable',
   props: {
-    ruleList: Array
+    ruleList: Array,
+    loading: false
+  },
+  watch: {
+    ruleList: {
+      handler (newValue, oldValue) {
+        console.log(newValue)
+      },
+      deep: true
+    }
   },
   data () {
     return {
-      ruleName: ''
+      ruleName: '',
+      userId: '1072760173225591'
     }
   },
   methods: {
     search (tableData, key) {
       return tableSearch.filter(tableData, key)
+    },
+    addRule () {
+      this.$router.push({
+        name: 'addRule',
+        params: {
+          userId: this.userId
+        }
+      })
+    },
+    refreshRules () {
+      this.loading = true
+      this.$emit('refreshRules')
     },
     showRule (detail) {
     }
@@ -75,5 +103,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .refresh-button {
+    float: right;
+  }
 </style>

@@ -4,10 +4,14 @@
       <el-tab-pane label="实例列表" name="instance" @click="tabChange('instance')">
         <div class="search">
           <el-input class="elInput" v-model="instanceId" placeholder="输入实例id或名称进行搜索"/>
-<!--          <el-button class="searchBtn">搜索</el-button>-->
+          <el-button @click="refreshRds" class="refresh-button">刷新</el-button>
         </div>
         <div>
           <el-table
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             ref="multipleTable"
             :data="search(instanceList, instanceId)"
             tooltip-effect="dark"
@@ -56,7 +60,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="报警规则" name="warn" @click="tabChange('instance')">
-        <rule-table v-if="isReady" :rule-list="ruleList"/>
+        <rule-table v-if="isReady" :rule-list="ruleList" :loading="ruleLoading" @refreshRules="refreshRules"/>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -75,13 +79,15 @@ export default {
     ruleTable
   },
   created () {
+    this.loading = this.ruleLoading = true
     rdsInfo.getInstances(this.userId).then(res => {
       this.instanceList = res.data
-      console.log(res.data)
+      this.loading = false
     })
     rule.getRdsRuleList(this.userId).then(res => {
       this.ruleList = res.data
       this.isReady = true
+      this.ruleLoading = false
     })
   },
   data () {
@@ -91,7 +97,9 @@ export default {
       activeTab: 'instance',
       instanceList: [],
       ruleList: [],
-      isReady: false
+      isReady: false,
+      loading: false,
+      ruleLoading: false
     }
   },
   methods: {
@@ -109,13 +117,56 @@ export default {
           dBInstanceId: scopedRow.dBInstanceId
         }
       })
+    },
+    refreshRds () {
+      this.loading = true
+      rdsInfo.refreshInstances(this.userId).then(res => {
+        if (res.data.code === 400) {
+          this.loading = false
+          this.$message(res.data.message)
+        } else {
+          this.instanceList = res.data
+          this.loading = false
+          this.$message('刷新成功')
+        }
+      }).catch(err => {
+        this.loading = false
+        this.$notify({
+          title: '失败',
+          message: err.response.status
+        })
+        console.log(err.response.data)
+      })
+    },
+    refreshRules () {
+      this.ruleLoading = true
+      rule.refreshRules(this.userId, 'RDS').then(res => {
+        if (res.data.code === 400) {
+          this.ruleLoading = false
+          this.$message(res.data.message)
+        } else {
+          this.ruleList = res.data
+          this.ruleLoading = false
+          this.$message('刷新成功')
+        }
+      }).catch(err => {
+        this.ruleLoading = false
+        this.$notify({
+          title: '失败',
+          message: err.response.status
+        })
+        console.log(err.response.data)
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-  .search {
-    display: flex;
+  /*.search {*/
+  /*  display: flex;*/
+  /*}*/
+  .refresh-button {
+    float: right;
   }
 </style>

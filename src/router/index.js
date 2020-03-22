@@ -12,6 +12,7 @@ import ossMonitor from '../components/statistic/oss/OssMonitor'
 import rdsMonitor from '../components/statistic/rds/RdsMonitor'
 
 import ruleMain from '../components/alarm/rule/RuleMain'
+import addRule from '../components/alarm/rule/AddRule'
 import contactMain from '../components/alarm/contact/ContactMain'
 import groupMain from '../components/alarm/group/GroupMain'
 
@@ -64,6 +65,11 @@ export default new Router({
           path: 'ruleMain',
           name: 'ruleMain',
           component: ruleMain
+        },
+        {
+          path: 'addRule',
+          name: 'addRule',
+          component: addRule
         },
         {
           path: 'contactMain',

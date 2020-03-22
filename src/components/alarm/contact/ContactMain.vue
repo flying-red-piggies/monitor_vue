@@ -7,6 +7,10 @@
         </div>
         <div>
           <el-table
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             ref="multipleTable"
             :data="search(contactList, name)"
             tooltip-effect="dark"
@@ -53,6 +57,10 @@
         </div>
         <div>
           <el-table
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             ref="multipleTable"
             :data="search(groupList, groupName)"
             tooltip-effect="dark"
@@ -87,11 +95,13 @@ import tableSearch from '../../../common/table/tableSearch'
 export default {
   name: 'contactMain',
   created () {
+    this.loading = true
     group.getGroupList(this.userId).then(res => {
       this.groupList = res.data
       this.groupList.forEach((value) => {
         this.contactList = this.contactList.concat(value.contacts)
       })
+      this.loading = false
     })
   },
   data () {
@@ -101,7 +111,8 @@ export default {
       groupName: '',
       activeTab: 'contact',
       contactList: [],
-      groupList: []
+      groupList: [],
+      loading: false
     }
   },
   methods: {

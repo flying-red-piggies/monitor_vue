@@ -152,6 +152,9 @@ export default {
     color: #3a8ee6;
     border-color: #0a0c13;
   }
+  .el-tabs__item.is-disabled {
+    color: #0a0c13;
+  }
   .el-tabs>.el-tabs__header {
     background-color: #0a0c13;
     border-color: #3a8ee6;
@@ -173,7 +176,7 @@ export default {
   .el-button {
     height: 40px;
     background: #0a0c13;
-    border: 1px solid #122f5c;
+    border: 2px solid #122f5c;
   }
   .el-button--text {
     padding: 7px 15px;
@@ -182,23 +185,23 @@ export default {
   .el-button:hover {
     height: 40px;
     background: #1a2032;
-    border: 1px solid #122f5c;
+    border: 2px solid #122f5c;
   }
   .el-button:focus {
     background: #1a2032;
-    border: 1px solid #122f5c;
+    border: 2px solid #122f5c;
   }
   .el-button.is-disabled.is-plain {
     background: #0a0c13;
-    border: 1px solid #122f5c;
+    border: 2px solid #122f5c;
   }
   .el-button.is-disabled.is-plain:hover {
     background: #1a2032;
-    border: 1px solid #122f5c;
+    border: 2px solid #122f5c;
   }
   .el-button.is-plain:hover {
     background: #1a2032;
-    border: 1px solid #122f5c;
+    border: 2px solid #122f5c;
   }
   .el-input__inner {
     color: #3a8ee6;
@@ -283,5 +286,8 @@ export default {
     border-image: -moz-radial-gradient(#2074af,#0a0c13) 2 2;
     border-image: radial-gradient(#2074af, #343c5d) 2 2;
     background-color: #0a0c13;
+  }
+  .el-form-item__label {
+    color: #3a8ee6;
   }
 </style>

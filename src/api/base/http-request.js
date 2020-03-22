@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 axios.defaults.baseURL = '/api'
 axios.defaults.withCredentials = true
 
@@ -20,6 +21,11 @@ export default {
   },
   bodyPost (url, data) {
     return axios.post(url, data, {
+      withCredentials: true
+    })
+  },
+  paramPost (url, data) {
+    return axios.post(url, qs.stringify(data), {
       withCredentials: true
     })
   }

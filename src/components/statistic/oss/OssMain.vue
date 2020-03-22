@@ -4,9 +4,14 @@
         <el-tab-pane label="Bucket列表" name="bucket" @click="tabChange('bucket')">
           <div class="search">
             <el-input class="elInput" v-model="bucketName" placeholder="输入Bucket名称进行搜索"/>
+            <el-button @click="refreshOss" class="refresh-button">刷新</el-button>
           </div>
           <div>
             <el-table
+              v-loading="loading"
+              element-loading-text="拼命加载中"
+              element-loading-spinner="el-icon-loading"
+              element-loading-background="rgba(0, 0, 0, 0.8)"
               ref="multipleTable"
               :data="search(bucketList, bucketName)"
               tooltip-effect="dark"
@@ -45,7 +50,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="报警规则" name="warn" @click="tabChange('warn')">
-          <rule-table v-if="isReady" :rule-list="ruleList"/>
+          <rule-table v-if="isReady" :rule-list="ruleList" :loading="ruleLoading" @refreshRules="refreshRules"/>
         </el-tab-pane>
       </el-tabs>
   </div>
@@ -65,15 +70,18 @@ export default {
     ruleTable
   },
   created () {
+    this.loading = this.ruleLoading = true
     ossInfo.getBuckets(this.userId).then(res => {
       this.bucketList = res.data
       this.bucketList.forEach(function (item) {
         item['creationDate'] = moment(item['creationDate']).format('YYYY/MM/DD HH:mm')
       })
+      this.loading = false
     })
     rule.getOssRuleList(this.userId).then(res => {
       this.ruleList = res.data
       this.isReady = true
+      this.ruleLoading = false
     })
   },
   data () {
@@ -83,7 +91,9 @@ export default {
       activeTab: 'bucket',
       bucketList: [],
       ruleList: [],
-      isReady: false
+      isReady: false,
+      loading: false,
+      ruleLoading: false
     }
   },
   methods: {
@@ -101,13 +111,59 @@ export default {
           bucketName: scopedRow.name
         }
       })
+    },
+    refreshOss () {
+      this.loading = true
+      ossInfo.refreshBuckets(this.userId).then(res => {
+        if (res.data.code === 400) {
+          this.loading = false
+          this.$message(res.data.message)
+        } else {
+          this.bucketList = res.data
+          this.bucketList.forEach(function (item) {
+            item['creationDate'] = moment(item['creationDate']).format('YYYY/MM/DD HH:mm')
+          })
+          this.loading = false
+          this.$message('刷新成功')
+        }
+      }).catch(err => {
+        this.loading = false
+        this.$notify({
+          title: '失败',
+          message: err.response.status
+        })
+        console.log(err.response.data)
+      })
+    },
+    refreshRules () {
+      this.ruleLoading = true
+      rule.refreshRules(this.userId, 'OSS').then(res => {
+        if (res.data.code === 400) {
+          this.ruleLoading = false
+          this.$message(res.data.message)
+        } else {
+          this.ruleList = res.data
+          this.ruleLoading = false
+          this.$message('刷新成功')
+        }
+      }).catch(err => {
+        this.ruleLoading = false
+        this.$notify({
+          title: '失败',
+          message: err.response.status
+        })
+        console.log(err.response.data)
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-  .search {
-    display: flex;
+  /*.search {*/
+  /*  display: flex;*/
+  /*}*/
+  .refresh-button {
+    float: right;
   }
 </style>

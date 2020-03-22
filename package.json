@@ -23,6 +23,7 @@
     "jquery": "^3.4.1",
     "layui-layer": "^1.0.9",
     "moment": "^2.24.0",
+    "qs": "^6.9.2",
     "swiper": "^5.3.6",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^4.0.2",
