@@ -34,7 +34,7 @@
           </el-table>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="其它" name="warn">其它</el-tab-pane>
+      <el-tab-pane label="其它" name="warn" disabled>其它</el-tab-pane>
     </el-tabs>
   </div>
 </template>

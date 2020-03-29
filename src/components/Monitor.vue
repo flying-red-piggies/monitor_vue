@@ -1,7 +1,7 @@
 <template>
   <div id="monitor">
     <div class="leftNav">
-      <el-menu id="elMenu" :default-active="this.$router.path" router
+      <el-menu id="elMenu" :default-active="this.$route.path" router
                class="el-menu-vertical-demo"
                background-color="#0a0c13"
                text-color="#fff"
@@ -19,8 +19,8 @@
           <el-menu-item-group>
             <template slot="title">监控</template>
             <el-menu-item index="/ecsMain">ECS监控</el-menu-item>
-            <el-menu-item index="/ossMain">OSS监控</el-menu-item>
             <el-menu-item index="/rdsMain">RDS监控</el-menu-item>
+            <el-menu-item index="/ossMain">OSS监控</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="3">
@@ -32,7 +32,6 @@
             <template slot="title">报警</template>
             <el-menu-item index="/ruleMain">报警规则</el-menu-item>
             <el-menu-item index="/contactMain">报警联系人</el-menu-item>
-            <el-menu-item index="/groupMain">报警群组</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>

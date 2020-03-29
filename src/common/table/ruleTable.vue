@@ -45,13 +45,13 @@
           label="通知对象">
           <template slot-scope="scope">{{ scope.row.contactGroups }}</template>
         </el-table-column>
-        <el-table-column
-          label="操作"
-          width="80">
-          <template slot-scope="scope">
-            <el-link @click="showRule(scope.row)">详情</el-link>
-          </template>
-        </el-table-column>
+<!--        <el-table-column-->
+<!--          label="操作"-->
+<!--          width="80">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-link @click="showRule(scope.row)">详情</el-link>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </el-table>
     </div>
   </div>
@@ -105,5 +105,14 @@ export default {
 <style scoped>
   .refresh-button {
     float: right;
+    background-color: #337eca;
+    border: 1px solid #337eca;
+    color: #000000;
+    font-weight: bold;
+  }
+  .refresh-button:hover {
+    background-color: #0a0c13;
+    border: 1px  solid #337eca;
+    color: #337eca;
   }
 </style>

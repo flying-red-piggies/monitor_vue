@@ -3,7 +3,11 @@
     <el-row>
       <el-col :span="24"><el-page-header @back="goBack" :content="'创建报警规则'"/></el-col>
     </el-row>
-    <el-form ref="form" :model="form" label-width="80px" status-icon :rules="checkRules">
+    <el-form ref="form" :model="form" label-width="80px" status-icon :rules="checkRules"
+             v-loading="loading"
+             element-loading-text="拼命加载中"
+             element-loading-spinner="el-icon-loading"
+             element-loading-background="rgba(0, 0, 0, 0.8)">
       <el-form-item label="监控类型" prop="namespace">
         <el-select v-model="form.namespace" clearable placeholder="请选择产品类型" @change="selectNamespace">
           <el-option label="云服务器ECS" value="ECS"/>
@@ -90,9 +94,9 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="confirmAdd">立即创建</el-button>
-        <el-button @click="resetForm( 'form' )">清空</el-button>
-        <el-button @click="goBack">取消</el-button>
+        <el-button type="primary" @click="confirmAdd( 'form' )">立即创建</el-button>
+        <el-button @click="resetForm( 'form' )" class="reset-button">清空</el-button>
+        <el-button @click="goBack" class="cancel-button">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -130,7 +134,7 @@ export default {
         } else {
           callback()
         }
-      }, 1000)
+      }, 500)
     }
     let validateRuleId = (rule, value, callback) => {
       if (value === '') {
@@ -142,7 +146,7 @@ export default {
         } else {
           callback()
         }
-      }, 1000)
+      }, 500)
     }
     let validateThreshold = (rule, value, callback) => {
       console.log(value)
@@ -159,9 +163,10 @@ export default {
             callback()
           }
         }
-      }, 1000)
+      }, 500)
     }
     return {
+      loading: false,
       form: {
         userId: '',
         ruleId: '',
@@ -254,14 +259,44 @@ export default {
       operators: [],
       contactGroups: [],
       checkRules: {
+        namespace: [
+          { required: true, message: '请选择产品类型', trigger: 'blur' }
+        ],
+        resource: [
+          { required: true, message: '请选择', trigger: 'blur' }
+        ],
         ruleName: [
+          { required: true, message: '请输入姓名', trigger: 'blur' },
           { validator: validateRuleName, trigger: 'blur' }
         ],
         ruleId: [
+          { required: true, message: '请输入姓名', trigger: 'blur' },
           { validator: validateRuleId, trigger: 'blur' }
         ],
+        metricName: [
+          { required: true, message: '请选择监控项', trigger: 'blur' }
+        ],
+        period: [
+          { required: true, message: '请选择周期长度', trigger: 'blur' }
+        ],
+        times: [
+          { required: true, message: '请选择持续周期', trigger: 'blur' }
+        ],
+        statistics: [
+          { required: true, message: '请选择监控值', trigger: 'blur' }
+        ],
+        comparisonOperator: [
+          { required: true, message: '请选择比较符', trigger: 'blur' }
+        ],
         threshold: [
+          { required: true, message: '请输入阈值', trigger: 'blur' },
           { validator: validateThreshold, trigger: 'blur' }
+        ],
+        contactGroups: [
+          { required: true, message: '请选择联系人组', trigger: 'blur' }
+        ],
+        warn: [
+          { required: true, message: '请选择报警级别', trigger: 'blur' }
         ]
       }
     }
@@ -302,25 +337,43 @@ export default {
         this.statistics = res.data
       })
     },
-    confirmAdd () {
-      console.log(this.form)
-      rule.addRule(this.form).then(res => {
-        this.$notify({
-          title: '添加成功',
-          message: '成功添加报警规则'
-        })
-        this.$router.push({
-          name: 'ruleMain',
-          params: {
-            ruleList: res.data
-          }
-        })
-      }).catch(err => {
-        this.$notify({
-          title: '失败',
-          message: err.response.status
-        })
-        console.log(err.response.data)
+    confirmAdd (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.loading = true
+          console.log(this.form)
+          rule.addRule(this.form).then(res => {
+            if (res.data.code === 400) {
+              this.loading = false
+              this.$notify({
+                title: res.data.message,
+                message: res.data.data
+              })
+            } else {
+              this.$notify({
+                title: '添加成功',
+                message: '成功添加报警规则'
+              })
+              this.loading = false
+              this.$router.push({
+                name: 'ruleMain',
+                params: {
+                  ruleList: res.data.data
+                }
+              })
+            }
+          }).catch(err => {
+            this.loading = false
+            this.$notify({
+              title: '失败',
+              message: err.response.status
+            })
+            console.log(err.response.data)
+          })
+        } else {
+          console.log(this.form)
+          return false
+        }
       })
     },
     resetForm (formName) {
@@ -336,5 +389,19 @@ export default {
     border: none;
     font-size: medium;
     padding-top: 12%;
+  }
+  .reset-button {
+    color: #bf2020;
+    border-color: #bf2020;
+  }
+  .reset-button:hover {
+    color: #da2525;
+    border-color: #da2525;
+  }
+  .cancel-button {
+    color: #72767b;
+  }
+  .cancel-button:hover {
+    color: #a4acb1;
   }
 </style>

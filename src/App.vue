@@ -109,8 +109,11 @@ export default {
     border-width: 2px;
     border-color: #09121b;
   }
-  span {
+  .el-card__header span {
     color: #3a8ee6;
+  }
+  .el-link span {
+    color: #44b4ff;
   }
   .el-tabs {
     border-width: 0;
@@ -175,8 +178,10 @@ export default {
   }
   .el-button {
     height: 40px;
+    font-weight: bold;
     background: #0a0c13;
     border: 2px solid #122f5c;
+    color: #3a8ee6;
   }
   .el-button--text {
     padding: 7px 15px;
@@ -185,7 +190,7 @@ export default {
   .el-button:hover {
     height: 40px;
     background: #1a2032;
-    border: 2px solid #122f5c;
+    border: 2px solid #235cbf;
   }
   .el-button:focus {
     background: #1a2032;
@@ -200,6 +205,10 @@ export default {
     border: 2px solid #122f5c;
   }
   .el-button.is-plain:hover {
+    background: #1a2032;
+    border: 2px solid #235cbf;
+  }
+  .el-button.is-plain:focus {
     background: #1a2032;
     border: 2px solid #122f5c;
   }
@@ -290,4 +299,41 @@ export default {
   .el-form-item__label {
     color: #3a8ee6;
   }
+  .el-transfer-panel .el-transfer-panel__header {
+    background-color: rgb(18, 47, 92);
+    border-bottom: 1px solid #3a8ee6;
+  }
+  .el-transfer-panel {
+    background-color: rgb(18, 47, 92);
+    border: none;
+  }
+  .el-transfer-panel__list {
+    background-color: rgb(18, 47, 92);
+    border: none;
+  }
+  .el-transfer-panel .el-transfer-panel__header .el-checkbox .el-checkbox__label {
+    color: #3a8ee6;
+  }
+  .el-transfer-panel__item.el-checkbox .el-checkbox__label {
+    color: #3a8ee6;
+  }
+  .el-form-item__content {
+    line-height: 0;
+  }
+  .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
+    background: #242941;
+    border: 2px solid #1b488a;
+  }
+  .el-collapse {
+    border-bottom: none;
+    border-top: none;
+  }
+  /*.el-checkbox__input.is-checked+.el-checkbox__label {*/
+  /*  color: #3a3b3c;*/
+  /*  font-weight: bold;*/
+  /*}*/
+  /*.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {*/
+  /*  background-color: #3a3b3c;*/
+  /*  border-color: #3a3b3c;*/
+  /*}*/
 </style>

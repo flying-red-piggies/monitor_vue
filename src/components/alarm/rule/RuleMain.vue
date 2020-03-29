@@ -2,9 +2,9 @@
   <div>
     <el-tabs v-model="activeTab">
       <el-tab-pane label="规则概览" name="rule">
-        <rule-table v-if="isReady" :rule-list="ruleList" :loading="ruleLoading" @refreshRules="refreshRules"/>
+        <rule-table v-if="isReady" :rule-list="ruleList" :loading.sync="ruleLoading" @refreshRules="refreshRules"/>
       </el-tab-pane>
-      <el-tab-pane label="其它" name="warn" disabled="true">其它</el-tab-pane>
+      <el-tab-pane label="其它" name="warn" disabled>其它</el-tab-pane>
     </el-tabs>
   </div>
 </template>

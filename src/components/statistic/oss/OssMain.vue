@@ -160,10 +160,16 @@ export default {
 </script>
 
 <style scoped>
-  /*.search {*/
-  /*  display: flex;*/
-  /*}*/
   .refresh-button {
     float: right;
+    background-color: #337eca;
+    border: 1px solid #337eca;
+    color: #000000;
+    font-weight: bold;
+  }
+  .refresh-button:hover {
+    background-color: #0a0c13;
+    border: 1px  solid #337eca;
+    color: #337eca;
   }
 </style>
