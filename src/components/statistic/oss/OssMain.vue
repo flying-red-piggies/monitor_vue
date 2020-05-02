@@ -32,12 +32,18 @@
                 <template slot-scope="scope">{{ scope.row.creationDate }}</template>
               </el-table-column>
               <el-table-column
-                label="所在地域">
+                label="所在地域"
+                width="135">
                 <template slot-scope="scope">{{ scope.row.location }}</template>
               </el-table-column>
               <el-table-column
                 label="endpoint">
                 <template slot-scope="scope">{{ scope.row.extranetEndpoint }}</template>
+              </el-table-column>
+              <el-table-column
+                label="存储类型"
+                width="90">
+                <template slot-scope="scope">{{ scope.row.storageClass }}</template>
               </el-table-column>
               <el-table-column
                 label="操作"

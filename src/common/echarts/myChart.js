@@ -1,4 +1,5 @@
 import moment from 'moment'
+import echarts from 'echarts'
 
 export default {
   vuePage: '',
@@ -12,6 +13,13 @@ export default {
     textColor: '#4feeef',
     maskColor: '#0a0c13'
   },
+  color: [
+    '#ee2c29', '#c2d602',
+    '#23b709', '#348af9',
+    '#a01cbd', '#ab715b',
+    '#ff791c', '#c4759a',
+    '#12088b', '#2c8161'
+  ],
   mapDataPoints (resData, dataNames) {
     let dataPoints = []
     for (let i = 0; i < dataNames.length; i++) {
@@ -28,6 +36,7 @@ export default {
   },
   getLines (legendNames, dataPoints) {
     let series = []
+    let color = this.color
     for (let i = 0; i < legendNames.length; i++) {
       series.push({
         name: legendNames[i],
@@ -40,6 +49,15 @@ export default {
             width: 1
           }
         },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: color[i]
+          }, {
+            offset: 1,
+            color: 'transparent'
+          }])
+        },
         data: dataPoints[i]
       })
     }
@@ -47,11 +65,10 @@ export default {
   },
   getChartOption (chartName, legendNames, series, xTime) {
     let vuePage = this.vuePage
+    let color = this.color
     return {
       backgroundColor: '#0a0c13',
-      color: ['#ee2c29', '#c2d602', '#23b709', '#348af9',
-        '#a01cbd', '#ab715b', '#ff791c', '#c4759a',
-        '#12088b', '#2c8161'],
+      color: color,
       legend: {
         data: legendNames,
         icon: 'pin',

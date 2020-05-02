@@ -22,36 +22,37 @@
               width="55">
             </el-table-column>
             <el-table-column
-              label="实例ID"
+              label="实例ID/实例名称"
               width="120">
-              <template slot-scope="scope">{{ scope.row.dBInstanceId }}</template>
+              <template slot-scope="scope">{{ scope.row.dBInstanceId + '/\r\n' + scope.row.dBInstanceDescription}}</template>
             </el-table-column>
             <el-table-column
-              label="实例名称"
-              width="120">
-              <template slot-scope="scope">{{ scope.row.dBInstanceDescription }}</template>
-            </el-table-column>
-            <el-table-column
-              label="运行状态">
+              label="运行状态"
+              width="80">
               <template slot-scope="scope">{{ scope.row.dBInstanceStatus }}</template>
             </el-table-column>
             <el-table-column
-              label="数据库类型">
+              label="数据库类型"
+              width="100">
               <template slot-scope="scope">{{ scope.row.engine + '-' + scope.row.engineVersion }}</template>
             </el-table-column>
             <el-table-column
-              label="所在地域-可用区"
-              width="240">
-              <template slot-scope="scope">{{ scope.row.regionId + '-' + scope.row.zoneId}}</template>
+              label="所在地域"
+              width="105">
+              <template slot-scope="scope">{{ scope.row.regionId}}</template>
             </el-table-column>
-<!--            <el-table-column-->
-<!--              label="可用区"-->
-<!--              width="120">-->
-<!--              <template slot-scope="scope">{{ scope.row.zoneId }}</template>-->
-<!--            </el-table-column>-->
+            <el-table-column
+              label="外网地址">
+              rm-uf6296s9w426fekf56o.mysql.rds.aliyuncs.com
+            </el-table-column>
+            <el-table-column
+              label="实例规格"
+              width="120">
+              <template slot-scope="scope">{{ scope.row.dBInstanceClass}}</template>
+            </el-table-column>
             <el-table-column
               label="操作"
-              width="120">
+              width="80">
               <template slot-scope="scope">
                 <el-link style="color: blue" @click="showChart(scope.row)">监控图表</el-link>
               </template>

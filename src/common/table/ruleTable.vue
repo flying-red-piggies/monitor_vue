@@ -26,16 +26,17 @@
         </el-table-column>
         <el-table-column
           label="状态"
-          width="150">
+          width="50">
           <template slot-scope="scope">{{ scope.row.alertState }}</template>
         </el-table-column>
         <el-table-column
-          label="启用">
+          label="启用"
+          width="50">
           <template slot-scope="scope">{{ scope.row.enableState }}</template>
         </el-table-column>
         <el-table-column
-          label="监控项">
-          <template slot-scope="scope">{{ scope.row.metricName }}</template>
+          label="描述">
+          <template slot-scope="scope">{{ scope.row.metricName + scope.row.op + scope.row.threshold + '% 持续' + scope.row.times + '个周期' }}</template>
         </el-table-column>
         <el-table-column
           label="产品名称">

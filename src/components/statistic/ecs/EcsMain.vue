@@ -23,17 +23,29 @@
             <el-table-column
               label="实例ID/实例名称"
               width="200">
-              <template slot-scope="scope">{{ scope.row.instanceId + '/'}}</template>
-              <template slot-scope="scope">{{ scope.row.instanceName }}</template>
+              <template slot-scope="scope">{{ scope.row.instanceId + ' /\n ' + scope.row.instanceName}}</template>
             </el-table-column>
             <el-table-column
               label="运行状态"
-              width="120">
+              width="80">
               <template slot-scope="scope">{{ scope.row.status }}</template>
             </el-table-column>
             <el-table-column
-              label="所在地域">
+              label="所在地域"
+              width="105">
               <template slot-scope="scope">{{ scope.row.regionId}}</template>
+            </el-table-column>
+            <el-table-column
+              label="操作系统">
+              <template slot-scope="scope">{{ scope.row.oSName}}</template>
+            </el-table-column>
+            <el-table-column
+              label="公网IP">
+              <template slot-scope="scope">{{ scope.row.publicIpAddress[0]}}</template>
+            </el-table-column>
+            <el-table-column
+              label="实例类型">
+              <template slot-scope="scope">{{ scope.row.instanceType}}</template>
             </el-table-column>
             <el-table-column
               label="操作"
@@ -67,6 +79,7 @@ export default {
     this.loading = this.ruleLoading = true
     ecsInfo.getInstances(this.userId).then(res => {
       this.instanceList = res.data
+      console.log(res.data)
       this.loading = false
     })
     rule.getEcsRuleList(this.userId).then(res => {

@@ -12,6 +12,7 @@
 <script>
 import rule from '../../../api/alarm/rule'
 import ruleTable from '../../../common/table/ruleTable'
+import common from '../../../api/common'
 
 export default {
   name: 'ruleMain',
@@ -23,10 +24,21 @@ export default {
     this.ruleList = this.$route.params.ruleList
     if (this.ruleList === undefined) {
       console.log('ruleList in RuleMain is undefined, means first enter')
-      rule.getRuleList(this.userId).then(res => {
-        this.ruleList = res.data
-        this.isReady = true
-        this.ruleLoading = false
+      common.getOperators().then(res => {
+        let operators = res.data
+        rule.getRuleList(this.userId).then(res => {
+          this.ruleList = res.data
+          this.ruleList.map(item => {
+            for (let key in operators) {
+              if (operators[key].name === item.comparisonOperator) {
+                item.op = operators[key].op
+              }
+            }
+            return item
+          })
+          this.isReady = true
+          this.ruleLoading = false
+        })
       })
     } else {
       this.isReady = true

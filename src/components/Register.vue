@@ -10,8 +10,7 @@
              label-position="left"
              label-width="0px"
              class="register-page">
-      <h3 class="register-title">CloudMonitor for Ali Cloud</h3>
-      <h1 class="register-title">REGISTER</h1>
+      <h3 class="register-title">用户注册</h3>
       <el-form-item prop="username">
         <el-input type="text"
                   class="register-input"
@@ -40,8 +39,17 @@
                   auto-complete="off"
                   placeholder="邮箱地址"/>
       </el-form-item>
+      <el-form-item prop="validCode">
+        <div class="code-row">
+          <el-input class="register-input code-input"
+                    v-model="registerForm.validCode"
+                    auto-complete="off"
+                    placeholder="验证码"/>
+          <el-button class="code-button">发送验证码</el-button>
+        </div>
+      </el-form-item>
       <el-form-item style="width:100%;">
-        <el-button  class="register-button" style="width:100%;" @click="register( 'registerForm' )">注册</el-button>
+        <el-button class="register-button" style="width:100%;" @click="register( 'registerForm' )">注册</el-button>
       </el-form-item>
       <el-form-item style="width:100%;">
         <el-button class="login-button" style="width:100%;" @click="toLogin">已注册 去登录</el-button>
@@ -104,13 +112,26 @@ export default {
         }
       }, 500)
     }
+    let validateCode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入验证码'))
+      }
+      setTimeout(() => {
+        if (!(/^[0-9]{6}$/.test(value))) {
+          callback(new Error('验证码格式错误'))
+        } else {
+          callback()
+        }
+      }, 500)
+    }
     return {
       loading: false,
       registerForm: {
         username: '',
         password: '',
         confirmPassword: '',
-        email: ''
+        email: '',
+        validCode: ''
       },
       registerRule: {
         username: [
@@ -128,6 +149,10 @@ export default {
         email: [
           {required: true, message: '请输入邮箱地址', trigger: 'blur'},
           { validator: validateMail, trigger: 'blur' }
+        ],
+        validCode: [
+          {required: true, message: '请输入验证码', trigger: 'blur'},
+          { validator: validateCode, trigger: 'blur' }
         ]
       }
     }
@@ -186,12 +211,32 @@ export default {
   .register-page {
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    margin: 5% auto;
+    margin: 3% auto;
     width: 350px;
     padding: 35px 35px 15px;
     background: #fff;
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
+  }
+  .code-row {
+    /*float: left;*/
+    display: flex;
+  }
+  .code-input>>>.el-input__inner {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  .code-button {
+    background-color: #3a8ee6;
+    color: white;
+    border: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .code-button:hover {
+    background-color: #327ac4;
+    color: white;
+    border: none;
   }
   .register-input>>>.el-input__inner {
     background-color: white;
